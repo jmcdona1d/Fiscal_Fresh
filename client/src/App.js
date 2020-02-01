@@ -315,9 +315,9 @@ class App extends React.Component {
                                                             
                                                             <ul className="social">
                                                                 
-                                                                <li><a href=""><i className="fa fa-shopping-cart recipeIcons" style={{ color: '#000' }}></i></a>{item.calories}kcal</li>
-                                                                <li><a href=""><i className="fa fa-github recipeIcons" style={{ color: '#000' }}></i></a>{item.timeCook}   mins</li>
-                                                                <li><a href=""><i className="fa fa-github recipeIcons" style={{ color: '#000' }}></i></a>{item.servings}   servings</li>
+                                                                <li><a href=""><i className="fa fa-shopping-cart recipeIcons" ></i></a>{item.calories}kcal</li>
+                                                                <li><a href=""><i className="fa fa-github recipeIcons"></i></a>{item.timeCook}   mins</li>
+                                                                <li><a href=""><i className="fa fa-github recipeIcons"></i></a>{item.servings}   servings</li>
                                                             </ul>
                                                         </div>
                                                     </div>
