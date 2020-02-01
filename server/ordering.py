@@ -1,8 +1,8 @@
 from requests import Session
 import json
 from flask import request, make_response, jsonify
-import copy
-from user import add_recipe_history, get_jwt_token, login
+import threading
+from user import add_recipe_history, get_jwt_token, login, decode_auth_token
 
 def get_ingredients(session, request_body):
     items = []
@@ -40,10 +40,12 @@ def get_ingredients(session, request_body):
                     if product['tracking_params']['original_position'] == 1:
                         item = product
                         break
-                if item:
+                if item and cart_id:
                     break
             elif not cart_id and module['data'].get('header', None) and module['data']['header']['label'].startswith('Based On Your'):
                 cart_id = module['data']['tracking_params']['cart_id']
+                if item and cart_id:
+                    break
 
         if not item:
             continue
@@ -59,7 +61,7 @@ def get_ingredients(session, request_body):
         items.append(item_dict)
     return items, cart_id
 
-def add_to_cart(session, ingredients, cart_id):
+def add_items_to_cart(session, ingredients, cart_id):
     url = "https://www.instacart.ca/v3/carts/{}/update_items?source=web&cache_key=".format(cart_id)
 
     payload = json.dumps({
@@ -95,32 +97,32 @@ def add_to_cart(session, ingredients, cart_id):
     }
 
     response = session.request("PUT", url, headers=headers, data = payload)
-
     return response
 
-
-def order():
+def add_to_cart():
     request_body = request.get_json()
-    if not request_body:
-        request_body = request.form
-    session = Session()
-    login(session, request_body)
-    ingredients, cart_id = get_ingredients(session, request_body)
-    response = add_to_cart(session, ingredients, cart_id)
+    # check jwt token
+    if 'mealplanner_auth_token' in request.cookies:
+        auth_info = decode_auth_token(request.cookies['mealplanner_auth_token'])
+    else:
+        return make_response(jsonify({
+            'status': 'failed',
+            'status_code': 400,
+            'message': 'Must sign in'
+        }))
+    order_thread = threading.Thread(target=handle_order, args=(request_body, auth_info))
+    order_thread.start()
+    return 'success'
 
+def handle_order(request_body, auth_info):
+    request_body['email'] = auth_info['email']
+    session = Session()
+    login(True, session, auth_info)
+    ingredients, cart_id = get_ingredients(session, request_body)
+    response = add_items_to_cart(session, ingredients, cart_id)
     if response.status_code == 200:
+        print('added to cart')
         # succesfully added to cart, store user recipe history
         add_recipe_history(request_body)
-        jwt_token = get_jwt_token(request_body, authenticated=True)
-        resp = {
-            'status': 'success',
-            'status_code': 200,
-            'message': 'added to cart',
-        }
 
-        resp = make_response(jsonify(resp))
-        resp.set_cookie('mealplanner_auth_token', jwt_token.decode())
-
-        return resp
-    
     return response.text

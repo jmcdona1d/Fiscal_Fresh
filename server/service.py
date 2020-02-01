@@ -1,8 +1,8 @@
 from flask import Flask, request
-from ordering import order
+from ordering import add_to_cart
 from recipe_search import get_recipes
 from recipe_ingredients import get_recipe_ingredients
-from user import get_recipe_history
+from user import get_recipe_history, login
 import database
 app = Flask(__name__)
 
@@ -14,10 +14,14 @@ def search_recipes():
 def get_recipe_details():
     return get_recipe_ingredients()
 
-@app.route('/order')
+@app.route('/login', methods=['POST'])
+def authenticate():
+    return login()
+
+@app.route('/add-to-cart', methods=['POST'])
 def order_ingredients():
     # call code to order ingredients passed with the request
-    return order()
+    return add_to_cart()
 
 @app.route('/recipe_history')
 def get_user_recipe_history():

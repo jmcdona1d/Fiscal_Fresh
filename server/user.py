@@ -1,12 +1,18 @@
+import requests
 from requests import Session
 from base64 import b64decode
-from flask import request
+from flask import request, make_response, jsonify
 import json
 import datetime
 import jwt
 import database
 
-def login(session, request_body):
+def login(for_session=False, session=None, request_body=None):
+    if not request_body:
+        request_body = request.get_json()
+        if not request_body:
+            request_body = request.form
+
     url = "https://www.instacart.ca/v3/dynamic_data/authenticate/login?source=web^&cache_key=undefined"
 
     email = request_body['email']
@@ -40,16 +46,31 @@ def login(session, request_body):
         'accept-language': 'en-US,en;q=0.9'
     }
 
-    response = session.request("POST", url, headers=headers, data = payload)
-    return response.status_code
+    if for_session:
+        session.request('post', url, headers=headers, data = payload)
+        return
+
+    response = requests.post(url, headers=headers, data = payload)
+
+    if response.status_code == 200:
+        jwt_token = get_jwt_token(request_body, authenticated=True)
+        resp = {
+            'status': 'success',
+            'status_code': 200,
+            'message': 'authenticated',
+        }
+        resp = make_response(jsonify(resp))
+        resp.set_cookie('mealplanner_auth_token', jwt_token.decode())
+        return resp
+    else:
+        return make_response(jsonify({
+            'status': 'failed',
+            'status_code': 400,
+            'message': 'authentication failed'
+        }))
 
 
-def lookup_user(email):
-    # temporary until James has db going
-    pass
-
-
-def encode_auth_token(email):
+def encode_auth_token(email, pw):
     with open('credentials.json', 'r') as f:
         creds = json.loads(f.read())
         secret_key = b64decode(creds['SECRET_KEY'])
@@ -58,7 +79,8 @@ def encode_auth_token(email):
         payload = {
             'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, minutes=30),
             'iat': datetime.datetime.utcnow(),
-            'sub': email
+            'email': email,
+            'password': pw
         }
         return jwt.encode(
             payload,
@@ -75,7 +97,7 @@ def decode_auth_token(auth_token):
     
     try:
         payload = jwt.decode(auth_token, secret_key)
-        return payload['sub']
+        return payload
     except jwt.ExpiredSignatureError:
         return 'Signature expired. Please log in again.'
     except jwt.InvalidTokenError:
@@ -87,7 +109,7 @@ def get_jwt_token(request_body, authenticated=False):
         if login(session, request_body) != 200:
             return "Invalid credentials"
     # succesfully authenticated
-    return encode_auth_token(request_body['email'])
+    return encode_auth_token(request_body['email'], request_body['password'])
 
 def add_recipe_history(request_body):
     # add recipes to James' database
@@ -96,7 +118,7 @@ def add_recipe_history(request_body):
 def get_recipe_history():
     # authenticate the user
     if 'mealplanner_auth_token' in request.cookies:
-        email = decode_auth_token(request.cookies['mealplanner_auth_token'])
+        email = decode_auth_token(request.cookies['mealplanner_auth_token'])['email']
     else:
         return "must authenticate"
     return database.get_history(email)
