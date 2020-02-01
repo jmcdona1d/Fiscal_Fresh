@@ -312,6 +312,23 @@ a.main-button-slider {
   -o-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
 }
+li.a{
+  margin-bottom:60px;
+}
+li.a.main-button-slider {
+  font-size: 13px;
+  
+  border-radius: 20px;
+  padding: 12px 20px;
+  background-color: rgb(91, 206, 56);
+  text-transform: uppercase;
+  color: #fff;
+  letter-spacing: 0.25px;
+  -webkit-transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+}
 
 a.main-button-slider:hover {
   background-color: rgb(76, 175, 45);
@@ -459,13 +476,13 @@ header
   display: block;
   font-weight: 500;
   font-size: 13px;
-  color: #fff;
+  color: #fff !important;
   -webkit-transition: all 0.3s ease 0s;
   -moz-transition: all 0.3s ease 0s;
   -o-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
   height: 40px;
-  line-height: 40px;
+  
   border: transparent;
   letter-spacing: 1px;
 }

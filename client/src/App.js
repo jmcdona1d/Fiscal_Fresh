@@ -177,9 +177,9 @@ class App extends React.Component {
                                         Meal Prepper
                         </a>
                                     <ul className="nav">
-                                        <li><a href="#welcome" className="active">Cart</a></li>
+                                        <li><a href="#welcome" className="main-button-slider">Sign Up</a></li>
 
-                                        <li><a href="#events">Sign In</a></li>
+                                        <li><h3 href="#events"><i className="fa fa-shopping-cart" style={{ color: 'rgb(91, 206, 56)' }}></i> </h3></li>
 
                                     </ul>
                                     <a className='menu-trigger'>
@@ -276,7 +276,7 @@ class App extends React.Component {
                                                             
                                                             <ul className="social">
                                                                 
-                                                                <li><a href=""><i className="fa fa-github" style={{ color: '#000' }}></i></a>{item.calories}kcal</li>
+                                                                <li><a href=""><i className="fa fa-shopping-cart" style={{ color: '#000' }}></i></a>{item.calories}kcal</li>
                                                                 <li><a href=""><i className="fa fa-github" style={{ color: '#000' }}></i></a>{item.timeCook}   mins</li>
                                                                 <li><a href=""><i className="fa fa-github" style={{ color: '#000' }}></i></a>{item.servings}   servings</li>
                                                             </ul>
@@ -284,7 +284,7 @@ class App extends React.Component {
                                                     </div>
 
                                                     <div className="card-footer " style={{ textAlign: 'right' }}>
-                                                        <a href="#" className="btn btn-success btn-sm" >Add to Cart</a>
+                                                        <a href="#" className="btn btn-success btn-sm" ><i className="fa fa-shopping-cart" style={{ color: '#fff' }}></i> Add to Cart</a>
                                                     </div>
                                                 </div>
                                             </div>
