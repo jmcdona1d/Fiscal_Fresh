@@ -24,34 +24,6 @@ const source = [{
     "description": "Lorem Ipsum Dos Color Dit Simit",
     "image": { food },
     "calories": "500"
-},
-{
-    "id": "2",
-    "title": "boeger and Sons",
-    "description": "Reactive encompassing standardization",
-    "image": "https://s3.amazonaws.com/uifaces/faces/twitter/terryxlife/128.jpg",
-    "price": "$2.49"
-},
-{
-    "id": "3",
-    "title": "Welch Group",
-    "description": "Inverse coherent system engine",
-    "image": "https://s3.amazonaws.com/uifaces/faces/twitter/osmond/128.jpg",
-    "price": "$71.73"
-},
-{
-    "id": "4",
-    "title": "Breitenberg Inc",
-    "description": "User-centric radical solution",
-    "image": "https://s3.amazonaws.com/uifaces/faces/twitter/arthurholcombe1/128.jpg",
-    "price": "$98.09"
-},
-{
-    "id": "5",
-    "title": "de - Walker",
-    "description": "Monitored systematic project",
-    "image": "https://s3.amazonaws.com/uifaces/faces/twitter/nilshelmersson/128.jpg",
-    "price": "$47.91"
 }];
 
 
