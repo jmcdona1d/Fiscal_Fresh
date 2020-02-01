@@ -195,13 +195,15 @@ class App extends React.Component {
 
                     <div className="header-text">
                         <div className="container">
-                            <div className="row">
-                                <div className="offset-xl-3 col-xl-6 offset-lg-2 col-lg-8 col-md-12 col-sm-12">
+                            <div className="row home-features" >
+                                <div className="offset-xl-1 col-xl-12 offset-lg-2 col-lg-12 col-md-12 col-sm-12">
 
 
                                     <h1 style={{ fontWeight: 600 }}>Recipes   <i className="fa fa-long-arrow-right"></i>   Groceries</h1>
                                     <h4 className="compress">Browse your favourite recipes by cusine, meal type, plant based and so much more.</h4>
+                                    <div style={{paddingBottom:'40px'}}>
                                     <a href="#projects" className="main-button-slider">Learn More</a>
+                                    </div>
                                     {//<a href="./sponsor.js" className="main-button-donate">Sponsor Us</a>
                                     }
                                 </div>
@@ -272,7 +274,7 @@ class App extends React.Component {
                                                             <h2 className="card-title">{item.title}</h2>
                                                             <p className="card-text">{item.desc}</p>
                                                         </div>
-                                                        <div className="card-body col-xl-4 col-lg-4 col-md-4 product" style={{marginTop:'30px'}}>
+                                                        <div className="col-xl-4 col-lg-4 col-md-4 product" style={{marginTop:'30px'}}>
                                                             
                                                             <ul className="social">
                                                                 
@@ -321,6 +323,9 @@ class App extends React.Component {
                                                             <h4 className="card-title">{item.title}</h4>
                                                             <p className="card-text">{item.desc}</p>
                                                         </div>
+                                                        <div className="card-footer " style={{ textAlign: 'right' }}>
+                                                        <a href="#" className="btn btn-success btn-sm" ><i className="fa fa-shopping-cart" style={{ color: '#fff' }}></i> Add to Cart</a>
+                                                    </div>
                                                         </div>
                                                         </div>
                                                     ))}

@@ -231,7 +231,7 @@ body {
 }
 
 .compress{
-  padding-left:120px;
+  padding-left:0px;
   padding-right:120px;
 }
 
@@ -721,11 +721,26 @@ welcome
   height: 100vh;
 }
 
+.home-features {
+  cursor: pointer;
+  display: block;
+  background: #FFFFFF;
+  
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  padding: 30px;
+  text-align: left;
+  width:50%;
+  position: relative;
+  margin-bottom: 30px;
+}
+
 .welcome-area .header-text {
   position: absolute;
   top: 50%;
   transform: translateY(-55%);
-  text-align: center;
+  text-align: left;
   width: 100%;
 }
 
@@ -887,10 +902,10 @@ features
 }
 
 .features-small-item .features-title {
-  font-weight: 500;
-  font-size: 18px;
+  font-weight: 600;
+  font-size: 24px;
   color: #1e1e1e;
-  letter-spacing: 0.7px;
+  letter-spacing: 0px;
   margin-bottom: 15px;
   position: relative;
   z-index: 2;
