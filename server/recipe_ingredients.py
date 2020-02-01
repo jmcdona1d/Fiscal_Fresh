@@ -12,7 +12,11 @@ def get_recipe_ingredients():
         creds = json.loads(f.read())
         apiKey = creds['spoonacular_api_key']
 
-    recipeId = request.form['id']
+    request_body = request.get_json()
+    if not request_body:
+        request_body = request.form
+
+    recipeId = request_body['id']
 
     url = "https://api.spoonacular.com/recipes/{}/information?apiKey={}".format(recipeId, apiKey)
 

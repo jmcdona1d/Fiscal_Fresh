@@ -11,10 +11,14 @@ def get_recipes():
         creds = json.loads(f.read())
         apiKey = creds['spoonacular_api_key']
 
-    query = request.form.get('query', '')
-    cuisine = request.form.get('cuisine', '')
-    diet = request.form.get('diet', '')
-    intolerences = request.form.get('intolerences', '')
+    request_body = request.get_json()
+    if not request_body:
+        request_body = request.form
+
+    query = request_body.get('query', '')
+    cuisine = request_body.get('cuisine', '')
+    diet = request_body.get('diet', '')
+    intolerences = request_body.get('intolerences', '')
 
     url = "https://api.spoonacular.com/recipes/search?apiKey={}&query={}&cuisine={}&diet={}&intolerences={}&instructionsRequired=true".format(apiKey,query,cuisine,diet,intolerences)
     payload = {}
