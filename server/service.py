@@ -6,8 +6,10 @@ app = Flask(__name__)
 def search_recipes():
     # call James' code here
     return "a"
+
 @app.route('/get-recipe-details')
 def get_recipe_details():
+    # call James' code here
     return "a"
 
 @app.route('/order')
