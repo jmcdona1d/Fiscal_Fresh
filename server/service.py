@@ -1,15 +1,19 @@
 from flask import Flask
+from ordering import order
 app = Flask(__name__)
 
-@app.route('/get_recipes')
-def get_recipes():
+@app.route('/search-recipes')
+def search_recipes():
     # call James' code here
+    return "a"
+@app.route('/get-recipe-details')
+def get_recipe_details():
     return "a"
 
 @app.route('/order')
-def order():
-    # call Michael's code here
-    return "a"
+def order_ingredients():
+    # call code to order ingredients passed with the request
+    return order()
 
 @app.route('/authenticate')
 def sign_in():
