@@ -2,7 +2,7 @@ from flask import Flask, request
 from ordering import order
 from recipe_search import get_recipes
 from recipe_ingredients import get_recipe_ingredients
-from database import init_db
+import database
 app = Flask(__name__)
 
 @app.route('/search-recipes', methods=['GET'])
@@ -23,10 +23,10 @@ def sign_in():
     # authenticate, return jwc token
     return "a"
 
-@app.route('/recipe_history')
+@app.route('/recipe_history', methods=['GET'])
 def get_recipe_history():
     # get recipe history for authenticated user
-    return "a"
+    return database.add_history()
 
 
 @app.route('/')
@@ -35,5 +35,4 @@ def hello():
 
 
 if __name__ == "__main__":
-    init_db()
     app.run(debug=True)
