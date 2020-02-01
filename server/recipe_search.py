@@ -3,7 +3,8 @@ from flask import request
 import json
 
 #In: payload with any combination of: query(name), cuisine, diet, intolerences
-#Out: list of recipies that match the parameters (form: id, title, readyInMinutes, servings, image/imageURL)
+#Out: list of recipies that match the parameters 
+#       list format: id, title, readyInMinutes, servings, image/imageURL
 def get_recipes():
 
     with open('credentials.json', 'r') as f:

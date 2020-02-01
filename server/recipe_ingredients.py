@@ -3,7 +3,9 @@ from flask import request
 import json
 
 #IN: id of a recipe from recipe_search
-#OUT: list of ingredients in that recipe
+#OUT: list of ingredients and details of that recipe
+#       'top' has info about recipe - diet, healty, cheap, popular etc...
+#        list of ingredients has name, amount/unit, picture
 def get_recipe_ingredients():
 
     with open('credentials.json', 'r') as f:
