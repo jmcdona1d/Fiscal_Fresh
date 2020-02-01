@@ -23,16 +23,14 @@ def sign_in():
     # authenticate, return jwc token
     return "a"
 
-@app.route('/recipe_history', methods=['GET'])
-def get_recipe_history():
-    # get recipe history for authenticated user
-    return database.add_history()
-
-
 @app.route('/')
 def hello():
     return "hello"
 
+@app.route('/recipe_history')
+def get_user_recipe_history():
+    # get recipe history for authenticated user
+    return database.add_history()
 
 if __name__ == "__main__":
     app.run(debug=True)
