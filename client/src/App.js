@@ -258,8 +258,119 @@ class App extends React.Component {
                             <div className="col-lg-12">
                                 <div>
                                     <h2 style={{ marginTop: '175px', marginLeft: '50px', marginBottom: '90px', fontWeight: '600' }}> Browse Recipes by Category Below.</h2>
-{/*Slider*/}
-                                    <div className="margin-bottom-100">
+{/*Slider*/}                         <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Category 1.</h3>
+                                    <div className="margin-bottom-60">
+                                        <Slider {...settings}>
+                                        {this.state.list.map(item => (
+                                            <div className="mb-5 padding-10">
+                                                <div className="card" >
+                                                    <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
+                                                        <img src={food} style={{ width: '100%' }}></img>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="card-body col-xl-8 col-lg-8 col-md-8">
+
+
+                                                            <h2 className="card-title">{item.title}</h2>
+                                                            <p className="card-text">{item.desc}</p>
+                                                        </div>
+                                                        <div className="col-xl-4 col-lg-4 col-md-4 product" style={{marginTop:'30px'}}>
+                                                            
+                                                            <ul className="social">
+                                                                
+                                                                <li><a href=""><i className="recipeIcons fa fa-bolt" ></i></a>{item.calories}kcal</li>
+                                                                <li><a href=""><i className="recipeIcons fa fa-clock-o" ></i></a>{item.timeCook}   mins</li>
+                                                                <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.servings}   servings</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="card-footer " style={{ textAlign: 'right' }}>
+                                                        <a href="#" className="btn btn-sm" style={{backgroundColor:"#6cd34c", color:"#fff"}}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            ))}
+                                            
+                                        </Slider>
+                                    </div>
+
+                                    <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Category 2.</h3>
+                                    <div className="margin-bottom-60">
+                                        <Slider {...settings}>
+                                        {this.state.list.map(item => (
+                                            <div className="mb-5 padding-10">
+                                                <div className="card" >
+                                                    <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
+                                                        <img src={food} style={{ width: '100%' }}></img>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="card-body col-xl-8 col-lg-8 col-md-8">
+
+
+                                                            <h2 className="card-title">{item.title}</h2>
+                                                            <p className="card-text">{item.desc}</p>
+                                                        </div>
+                                                        <div className="col-xl-4 col-lg-4 col-md-4 product" style={{marginTop:'30px'}}>
+                                                            
+                                                            <ul className="social">
+                                                                
+                                                                <li><a href=""><i className="fa fa-shopping-cart recipeIcons" style={{ color: '#000' }}></i></a>{item.calories}kcal</li>
+                                                                <li><a href=""><i className="fa fa-github recipeIcons" style={{ color: '#000' }}></i></a>{item.timeCook}   mins</li>
+                                                                <li><a href=""><i className="fa fa-github recipeIcons" style={{ color: '#000' }}></i></a>{item.servings}   servings</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="card-footer " style={{ textAlign: 'right' }}>
+                                                    <a href="#" className="btn btn-sm" style={{backgroundColor:"#6cd34c", color:"#fff"}}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            ))}
+                                            
+                                        </Slider>
+                                    </div>
+
+                                    <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Category 3.</h3>
+                                    <div className="margin-bottom-60">
+                                        <Slider {...settings}>
+                                        {this.state.list.map(item => (
+                                            <div className="mb-5 padding-10">
+                                                <div className="card" >
+                                                    <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
+                                                        <img src={food} style={{ width: '100%' }}></img>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="card-body col-xl-8 col-lg-8 col-md-8">
+
+
+                                                            <h2 className="card-title">{item.title}</h2>
+                                                            <p className="card-text">{item.desc}</p>
+                                                        </div>
+                                                        <div className="col-xl-4 col-lg-4 col-md-4 product" style={{marginTop:'30px'}}>
+                                                            
+                                                            <ul className="social">
+                                                                
+                                                                <li><a href=""><i className="fa fa-shopping-cart" style={{ color: '#000' }}></i></a>{item.calories}kcal</li>
+                                                                <li><a href=""><i className="fa fa-github" style={{ color: '#000' }}></i></a>{item.timeCook}   mins</li>
+                                                                <li><a href=""><i className="fa fa-github" style={{ color: '#000' }}></i></a>{item.servings}   servings</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="card-footer " style={{ textAlign: 'right' }}>
+                                                        <a href="#" className="btn btn-success btn-sm" ><i className="fa fa-shopping-cart" style={{ color: '#fff' }}></i> Add to Cart</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            ))}
+                                            
+                                        </Slider>
+                                    </div>
+
+                                    <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '30px', fontWeight: '600' }}> Category 4.</h3>
+                                    <div className="margin-bottom-60">
                                         <Slider {...settings}>
                                         {this.state.list.map(item => (
                                             <div className="mb-5 padding-10">

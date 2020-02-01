@@ -736,6 +736,11 @@ welcome
   margin-bottom: 30px;
 }
 
+.recipeIcons{
+  color:#6cd34c;
+  margin-right:0.7em;
+}
+
 .welcome-area .header-text {
   position: absolute;
   top: 50%;
