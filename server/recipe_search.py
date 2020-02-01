@@ -3,7 +3,7 @@ from flask import request
 import json
 
 #In: payload with any combination of: query(name), cuisine, diet, intolerences
-#Out: list of recipies that match the parameters
+#Out: list of recipies that match the parameters (form: id, title, readyInMinutes, servings, image/imageURL)
 def get_recipes():
 
     with open('credentials.json', 'r') as f:
@@ -16,7 +16,6 @@ def get_recipes():
     intolerences = request.form.get('intolerences', '')
 
     url = "https://api.spoonacular.com/recipes/search?apiKey={}&query={}&cuisine={}&diet={}&intolerences={}&instructionsRequired=true".format(apiKey,query,cuisine,diet,intolerences)
-
     payload = {}
     headers= {}
 
