@@ -6,8 +6,11 @@ from user import add_recipe_history, get_jwt_token, login
 
 def get_ingredients(session, request_body):
     items = []
-    for ingredient in request_body['ingredients']:
-        url = "https://www.instacart.ca/v3/containers/loblaws/search_v3/{}?".format(ingredient)
+    cart_id = None
+    for ingredient in request_body['extendedIngredients']:
+        search_query = ingredient['name']
+
+        url = "https://www.instacart.ca/v3/containers/loblaws/search_v3/{}?".format(search_query.replace(' ', '%20'))
 
         payload = {}
         headers = {
@@ -27,13 +30,24 @@ def get_ingredients(session, request_body):
         content = json.loads(response.text)
 
         for module in content['container']['modules']:
-            if module['data'].get('header', None) and module['data']['header']['label'].split(' ')[1] == 'results':
+            if module['data'].get('header', None) and module['data']['header']['label'].startswith('Related'):
+                for product in module['data']['items']:
+                    if product['tracking_params']['original_position'] == 2:
+                        item = product
+                        break
+            elif module['data'].get('header', None) and module['data']['header']['label'].split(' ')[1] == 'results':
                 for product in module['data']['items']:
                     if product['tracking_params']['original_position'] == 1:
                         item = product
                         break
                 if item:
                     break
+            elif not cart_id and module['data'].get('header', None) and module['data']['header']['label'].startswith('Based On Your'):
+                cart_id = module['data']['tracking_params']['cart_id']
+
+        if not item:
+            continue
+
         item_dict = {
             "id": item['id'],
             "price": item['pricing']['price'],
@@ -43,10 +57,10 @@ def get_ingredients(session, request_body):
             "source_value": ingredient
         }
         items.append(item_dict)
-    return items
+    return items, cart_id
 
-def add_to_cart(session, ingredients):
-    url = "https://www.instacart.ca/v3/carts/50639323/update_items?source=web&cache_key="
+def add_to_cart(session, ingredients, cart_id):
+    url = "https://www.instacart.ca/v3/carts/{}/update_items?source=web&cache_key=".format(cart_id)
 
     payload = json.dumps({
                 "items": [
@@ -76,7 +90,6 @@ def add_to_cart(session, ingredients):
         'x-requested-with': 'XMLHttpRequest',
         'sec-fetch-site': 'same-origin',
         'sec-fetch-mode': 'cors',
-        'referer': 'https://www.instacart.ca/store/loblaws/search_v3/apple',
         'accept-encoding': 'gzip, deflate, br',
         'accept-language': 'en-US,en;q=0.9'
     }
@@ -92,8 +105,8 @@ def order():
         request_body = request.form
     session = Session()
     login(session, request_body)
-    ingredients = get_ingredients(session, request_body)
-    response = add_to_cart(session, ingredients)
+    ingredients, cart_id = get_ingredients(session, request_body)
+    response = add_to_cart(session, ingredients, cart_id)
 
     if response.status_code == 200:
         # succesfully added to cart, store user recipe history
@@ -110,4 +123,4 @@ def order():
 
         return resp
     
-    return response
+    return response.text
