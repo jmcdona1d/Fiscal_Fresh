@@ -14,6 +14,7 @@ import Slider from "react-slick";
 //import "./slick-carousel/slick/slick.css"; 
 //import "./slick-carousel/slick/slick-theme.css";
 import food from "./assets/images/food.jpg";
+import axios from 'axios';
 
 
 const initialState = { isLoading: false, results: [], value: '' }
@@ -26,15 +27,147 @@ const source = [{
     "calories": "500"
 }];
 
-
+function SampleNextArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", background: "red" }}
+        onClick={onClick}
+      />
+    );
+  }
+  
+  function SamplePrevArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", background: "green" }}
+        onClick={onClick}
+      />
+    );
+  }
 
 
 
 class App extends React.Component {
-
+    
     constructor(props) {
         super(props);
+
+        
+
         this.state = {
+            results: [
+                {
+                    "id": 592479,
+                    "title": "Kale and Quinoa Salad with Black Beans",
+                    "readyInMinutes": 50,
+                    "servings": 6,
+                    "image": "Kale-and-Quinoa-Salad-with-Black-Beans-592479.jpg",
+                    "imageUrls": [
+                        "Kale-and-Quinoa-Salad-with-Black-Beans-592479.jpg"
+                    ]
+                },
+                {
+                    "id": 547775,
+                    "title": "Creamy Avocado Pasta",
+                    "readyInMinutes": 15,
+                    "servings": 2,
+                    "image": "Creamy-Avocado-Pasta-547775.jpg",
+                    "imageUrls": [
+                        "Creamy-Avocado-Pasta-547775.jpg"
+                    ]
+                },
+                {
+                    "id": 818941,
+                    "title": "Avocado Toast with Eggs, Spinach, and Tomatoes",
+                    "readyInMinutes": 10,
+                    "servings": 1,
+                    "image": "avocado-toast-with-eggs-spinach-and-tomatoes-818941.jpg",
+                    "imageUrls": [
+                        "avocado-toast-with-eggs-spinach-and-tomatoes-818941.jpg"
+                    ]
+                },
+                {
+                    "id": 495111,
+                    "title": "Citrus Sesame Kale",
+                    "readyInMinutes": 15,
+                    "servings": 4,
+                    "image": "Citrus-Sesame-Kale-495111.jpg",
+                    "imageUrls": [
+                        "Citrus-Sesame-Kale-495111.jpg"
+                    ]
+                },
+                {
+                    "id": 689502,
+                    "title": "Melt In Your Mouth Kale Salad",
+                    "readyInMinutes": 10,
+                    "servings": 2,
+                    "image": "Melt-In-Your-Mouth-Kale-Salad-689502.jpg",
+                    "imageUrls": [
+                        "Melt-In-Your-Mouth-Kale-Salad-689502.jpg"
+                    ]
+                },
+                {
+                    "id": 837136,
+                    "title": "Kale Pineapple Smoothie",
+                    "readyInMinutes": 4,
+                    "servings": 1,
+                    "image": "kale-pineapple-smoothie-837136.jpg",
+                    "imageUrls": [
+                        "kale-pineapple-smoothie-837136.jpg"
+                    ]
+                },
+                {
+                    "id": 582897,
+                    "title": "Mexican Salad with Lime Dressing",
+                    "readyInMinutes": 15,
+                    "servings": 4,
+                    "image": "Mexican-Salad-with-Lime-Dressing-582897.jpg",
+                    "imageUrls": [
+                        "Mexican-Salad-with-Lime-Dressing-582897.jpg"
+                    ]
+                },
+                {
+                    "id": 777037,
+                    "title": "Weekly Meal Plan #17",
+                    "readyInMinutes": 15,
+                    "servings": 6,
+                    "image": "weekly-meal-plan-17-777037.jpg",
+                    "imageUrls": [
+                        "weekly-meal-plan-17-777037.jpg"
+                    ]
+                },
+                {
+                    "id": 801710,
+                    "title": "Matcha Green Tea and Pineapple Smoothie",
+                    "readyInMinutes": 10,
+                    "servings": 1,
+                    "image": "matcha-green-tea-and-pineapple-smoothie-801710.jpg",
+                    "imageUrls": [
+                        "matcha-green-tea-and-pineapple-smoothie-801710.jpg"
+                    ]
+                },
+                {
+                    "id": 812966,
+                    "title": "Low Carb Frosty",
+                    "readyInMinutes": 5,
+                    "servings": 1,
+                    "image": "low-carb-frosty-812966.jpg",
+                    "imageUrls": [
+                        "low-carb-frosty-812966.jpg"
+                    ]
+                }
+            ],
+            baseUri: "https://spoonacular.com/recipeImages/",
+            offset: 0,
+            number: 10,
+            totalResults: 270817,
+            processingTimeMs: 699,
+            expires: 1580791459643,
+            isStale: false,
             list: [
                 {
                     title:"Butter Chicken",
@@ -79,9 +212,11 @@ class App extends React.Component {
                     timeCook:"30"
                 }
             ],
+            
             filtered: []
 
         }
+        
 
         this.handleChange = this.handleChange.bind(this);
     }
@@ -152,6 +287,27 @@ class App extends React.Component {
         }, 300)
     }
 
+    handleSubmit(event) {
+        
+        console.log("hello");
+        const data = {
+          query: "chicken"
+        }
+        
+        let self = this;
+        axios.defaults.port = 5000;
+    
+        axios.get('http://127.0.0.1:5000/search-recipes', {query:"chicken"})
+          .then(res => {
+            console.log(res);
+            
+              self.setState({recipes: res.data});
+              
+            
+            console.log(self.state);
+          });
+      }
+      
 
     render() {
         const { isLoading, value, results, filtered } = this.state
@@ -161,12 +317,16 @@ class App extends React.Component {
             infinite: true,
             arrows: true,
             speed: 500,
+            
+            autoplaySpeed: 100,
             slidesToShow: 3,
-            slidesToScroll: 3
+            slidesToScroll: 1,
+            nextArrow: <SampleNextArrow />,
+            prevArrow: <SamplePrevArrow />
         };
         return (
             <div className="">
-
+                {this.handleSubmit()}
 
                 <header className="header-area header-sticky">
                     <div className="container">
@@ -177,9 +337,9 @@ class App extends React.Component {
                                         Meal Prepper
                         </a>
                                     <ul className="nav">
-                                        <li><a href="#welcome" className="main-button-slider">Sign Up</a></li>
+                                        <li><a href="#" className="main-button-slider" onClick={this.handleSubmit}>Sign Up</a></li>
 
-                                        <li><h3 href="#events"><i className="fa fa-shopping-cart" style={{ color: 'rgb(91, 206, 56)' }}></i> </h3></li>
+                                        <li><h3 href="#"><i className="fa fa-shopping-cart" style={{ color: 'rgb(91, 206, 56)' }}></i> </h3></li>
 
                                     </ul>
                                     <a className='menu-trigger'>
@@ -199,10 +359,10 @@ class App extends React.Component {
                                 <div className="offset-xl-1 col-xl-12 offset-lg-2 col-lg-12 col-md-12 col-sm-12">
 
 
-                                    <h1 style={{ fontWeight: 600 }}>Recipes   <i className="fa fa-long-arrow-right"></i>   Groceries</h1>
-                                    <h4 className="compress">Browse your favourite recipes by cusine, meal type, plant based and so much more.</h4>
-                                    <div style={{paddingBottom:'40px'}}>
-                                    <a href="#projects" className="main-button-slider">Learn More</a>
+                                    <h1 style={{ fontWeight: 600 }}>Recipes       <i className="fa fa-long-arrow-right"></i>   Groceries</h1>
+                                    <h4 className="compress">Browse your favourite recipes by cusine, meal type, various diets. Find some you like, add to cart and we will order the groceries you need.</h4>
+                                    <div style={{paddingBottom:'20px'}}>
+                                    <a href="" className="main-button-slider">Learn More</a>
                                     </div>
                                     {//<a href="./sponsor.js" className="main-button-donate">Sponsor Us</a>
                                     }
@@ -258,20 +418,20 @@ class App extends React.Component {
                             <div className="col-lg-12">
                                 <div>
                                     <h2 style={{ marginTop: '175px', marginLeft: '50px', marginBottom: '90px', fontWeight: '600' }}> Browse Recipes by Category Below.</h2>
-{/*Slider*/}                         <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Category 1.</h3>
+{/*Slider*/}                         <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Category</h3>
                                     <div className="margin-bottom-60">
                                         <Slider {...settings}>
-                                        {this.state.list.map(item => (
+                                        {this.state.results.map(item => (
                                             <div className="mb-5 padding-10">
                                                 <div className="card" >
                                                     <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
-                                                        <img src={food} style={{ width: '100%' }}></img>
+                                                        <img src={this.state.baseUri+"/"+item.imageUrls} style={{ width: '100%' }}></img>
                                                     </div>
                                                     <div className="row">
                                                         <div className="card-body col-xl-8 col-lg-8 col-md-8">
 
 
-                                                            <h2 className="card-title">{item.title}</h2>
+                                                            <h5 className="card-title">{item.title}</h5>
                                                             <p className="card-text">{item.desc}</p>
                                                         </div>
                                                         <div className="col-xl-4 col-lg-4 col-md-4 product" style={{marginTop:'30px'}}>
@@ -295,116 +455,10 @@ class App extends React.Component {
                                         </Slider>
                                     </div>
 
-                                    <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Category 2.</h3>
-                                    <div className="margin-bottom-60">
-                                        <Slider {...settings}>
-                                        {this.state.list.map(item => (
-                                            <div className="mb-5 padding-10">
-                                                <div className="card" >
-                                                    <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
-                                                        <img src={food} style={{ width: '100%' }}></img>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="card-body col-xl-8 col-lg-8 col-md-8">
 
+                                   
 
-                                                            <h2 className="card-title">{item.title}</h2>
-                                                            <p className="card-text">{item.desc}</p>
-                                                        </div>
-                                                        <div className="col-xl-4 col-lg-4 col-md-4 product" style={{marginTop:'30px'}}>
-                                                            
-                                                            <ul className="social">
-                                                                
-                                                                <li><a href=""><i className="fa fa-shopping-cart recipeIcons" ></i></a>{item.calories}kcal</li>
-                                                                <li><a href=""><i className="fa fa-github recipeIcons"></i></a>{item.timeCook}   mins</li>
-                                                                <li><a href=""><i className="fa fa-github recipeIcons"></i></a>{item.servings}   servings</li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="card-footer " style={{ textAlign: 'right' }}>
-                                                    <a href="#" className="btn btn-sm" style={{backgroundColor:"#6cd34c", color:"#fff"}}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            ))}
-                                            
-                                        </Slider>
-                                    </div>
-
-                                    <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Category 3.</h3>
-                                    <div className="margin-bottom-60">
-                                        <Slider {...settings}>
-                                        {this.state.list.map(item => (
-                                            <div className="mb-5 padding-10">
-                                                <div className="card" >
-                                                    <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
-                                                        <img src={food} style={{ width: '100%' }}></img>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="card-body col-xl-8 col-lg-8 col-md-8">
-
-
-                                                            <h2 className="card-title">{item.title}</h2>
-                                                            <p className="card-text">{item.desc}</p>
-                                                        </div>
-                                                        <div className="col-xl-4 col-lg-4 col-md-4 product" style={{marginTop:'30px'}}>
-                                                            
-                                                            <ul className="social">
-                                                                
-                                                                <li><a href=""><i className="fa fa-shopping-cart" style={{ color: '#000' }}></i></a>{item.calories}kcal</li>
-                                                                <li><a href=""><i className="fa fa-github" style={{ color: '#000' }}></i></a>{item.timeCook}   mins</li>
-                                                                <li><a href=""><i className="fa fa-github" style={{ color: '#000' }}></i></a>{item.servings}   servings</li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="card-footer " style={{ textAlign: 'right' }}>
-                                                        <a href="#" className="btn btn-success btn-sm" ><i className="fa fa-shopping-cart" style={{ color: '#fff' }}></i> Add to Cart</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            ))}
-                                            
-                                        </Slider>
-                                    </div>
-
-                                    <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '30px', fontWeight: '600' }}> Category 4.</h3>
-                                    <div className="margin-bottom-60">
-                                        <Slider {...settings}>
-                                        {this.state.list.map(item => (
-                                            <div className="mb-5 padding-10">
-                                                <div className="card" >
-                                                    <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
-                                                        <img src={food} style={{ width: '100%' }}></img>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="card-body col-xl-8 col-lg-8 col-md-8">
-
-
-                                                            <h2 className="card-title">{item.title}</h2>
-                                                            <p className="card-text">{item.desc}</p>
-                                                        </div>
-                                                        <div className="col-xl-4 col-lg-4 col-md-4 product" style={{marginTop:'30px'}}>
-                                                            
-                                                            <ul className="social">
-                                                                
-                                                                <li><a href=""><i className="fa fa-shopping-cart" style={{ color: '#000' }}></i></a>{item.calories}kcal</li>
-                                                                <li><a href=""><i className="fa fa-github" style={{ color: '#000' }}></i></a>{item.timeCook}   mins</li>
-                                                                <li><a href=""><i className="fa fa-github" style={{ color: '#000' }}></i></a>{item.servings}   servings</li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="card-footer " style={{ textAlign: 'right' }}>
-                                                        <a href="#" className="btn btn-success btn-sm" ><i className="fa fa-shopping-cart" style={{ color: '#fff' }}></i> Add to Cart</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            ))}
-                                            
-                                        </Slider>
-                                    </div>
+                                    
 
 
                                     {/*Search*/}
@@ -459,6 +513,17 @@ class App extends React.Component {
                             </div>
                         </div>
                     </div>
+                </section>
+                {/* Ingredients List */}
+                <section>
+                    <h2 className="dairy"></h2>
+                    <li className="item"></li>
+                    <h2 className="dairy"></h2>
+                    <li className="item"></li>
+                    <h2 className="dairy"></h2>
+                    <li className="item"></li>
+                    <h2 className="dairy"></h2>
+                    <li className="item"></li>
                 </section>
 
 
