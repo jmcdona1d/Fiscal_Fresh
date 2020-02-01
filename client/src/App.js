@@ -36,12 +36,48 @@ class App extends React.Component {
         super(props);
         this.state = {
             list: [
-                "Butter Chicken",
-                "Greek Chicken",
-                "Thai Red Curry",
-                "Veggie Pizza",
-                "Another Thing",
-                "Another Thing"
+                {
+                    title:"Butter Chicken",
+                    desc:"Lorem Ipsum",
+                    calories:"500",
+                    servings:"4",
+                    timeCook:"30"
+                },
+                {
+                    title:"Butter Chicken",
+                    desc:"Lorem Ipsum",
+                    calories:"500",
+                    servings:"4",
+                    timeCook:"30"
+                },
+                {
+                    title:"Veggie Pizza",
+                    desc:"Lorem Ipsum",
+                    calories:"500",
+                    servings:"4",
+                    timeCook:"30"
+                },
+                {
+                    title:"Butter Chicken",
+                    desc:"Lorem Ipsum",
+                    calories:"500",
+                    servings:"4",
+                    timeCook:"30"
+                },
+                {
+                    title:"Thai Red Curry",
+                    desc:"Lorem Ipsum",
+                    calories:"500",
+                    servings:"4",
+                    timeCook:"30"
+                },
+                {
+                    title:"Greek Chicken",
+                    desc:"Lorem Ipsum",
+                    calories:"500",
+                    servings:"4",
+                    timeCook:"30"
+                }
             ],
             filtered: []
 
@@ -233,16 +269,16 @@ class App extends React.Component {
                                                         <div className="card-body col-xl-8 col-lg-8 col-md-8">
 
 
-                                                            <h2 className="card-title">{item}</h2>
-                                                            <p className="card-text">Lorem ipsum dolor sit amet, dolorem enim! Nesciunt pariatur voluptatem sunt quam eaque, vel, non in id dolore voluptates quos eligendi labore.</p>
+                                                            <h2 className="card-title">{item.title}</h2>
+                                                            <p className="card-text">{item.desc}</p>
                                                         </div>
                                                         <div className="card-body col-xl-4 col-lg-4 col-md-4 product" style={{marginTop:'30px'}}>
                                                             
                                                             <ul className="social">
                                                                 
-                                                                <li><a href=""><i className="fa fa-github" style={{ color: '#000' }}></i></a></li>
-                                                                <li><a href=""><i className="fa fa-github" style={{ color: '#000' }}></i></a></li>
-                                                                <li><a href=""><i className="fa fa-github" style={{ color: '#000' }}></i></a></li>
+                                                                <li><a href=""><i className="fa fa-github" style={{ color: '#000' }}></i></a>{item.calories}kcal</li>
+                                                                <li><a href=""><i className="fa fa-github" style={{ color: '#000' }}></i></a>{item.timeCook}   mins</li>
+                                                                <li><a href=""><i className="fa fa-github" style={{ color: '#000' }}></i></a>{item.servings}   servings</li>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -282,8 +318,8 @@ class App extends React.Component {
                                                                 <img src={food} style={{ width: '100%' }}></img>
                                                             </div>
                                                         <div key={item} className="card-body col-xl-12 col-lg-12 col-md-12">
-                                                            <h4 className="card-title">{item}</h4>
-                                                            <p className="card-text">Lorem ipsum dolor sit amet.</p>
+                                                            <h4 className="card-title">{item.title}</h4>
+                                                            <p className="card-text">{item.desc}</p>
                                                         </div>
                                                         </div>
                                                         </div>
