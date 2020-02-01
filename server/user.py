@@ -4,6 +4,7 @@ from flask import request
 import json
 import datetime
 import jwt
+import database
 
 def login(session, request_body):
     url = "https://www.instacart.ca/v3/dynamic_data/authenticate/login?source=web^&cache_key=undefined"
@@ -90,7 +91,7 @@ def get_jwt_token(request_body, authenticated=False):
 
 def add_recipe_history(request_body):
     # add recipes to James' database
-    pass
+    return database.add_history(request_body)
 
 def get_recipe_history():
     # authenticate the user
@@ -98,6 +99,5 @@ def get_recipe_history():
         email = decode_auth_token(request.cookies['mealplanner_auth_token'])
     else:
         return "must authenticate"
-    # temporary
-    return email
+    return database.get_history(email)
     

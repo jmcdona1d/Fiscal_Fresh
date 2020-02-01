@@ -18,26 +18,25 @@ print('Connected to database successfully')
 
 # IN: email in payload
 # OUT: list of recipies associated with that user
-def get_history():
+def get_history(email):
 
-    email = request.form['email']
     if (records.count_documents({'email':email}) != 1):
         return {
             'err':"email not found"
         }
 
     entry = records.find_one({'email': email})
-    return (entry['recipes'])
+    return (json.dumps(entry['recipes']))
 
 #IN: email, array of recipes
 #OUT: error or success status code??
-def add_history():
-    request_body = copy.deepcopy(request.get_json())
+def add_history(request_body):
     if not request_body:
         request_body = request.form
 
     email = request_body['email']
-    additions = request_body['recipes']
+    additions = set(request_body['recipes'])
+    
     #add document
     if (records.count_documents({'email':email}) != 1):
         new_entry={
@@ -49,9 +48,9 @@ def add_history():
     #edit document that already exists
     else:
         entry = records.find_one({'email':email})
-        recipes = entry['recipes'] + additions
+        additions |= set(entry['recipes'])
         
-        records.update_one({'email':email}, {"$set":{'recipes': recipes}})
+        records.update_one({'email':email}, {"$set":{'recipes': list(additions)}})
     return {
         'result': "success"
     }
