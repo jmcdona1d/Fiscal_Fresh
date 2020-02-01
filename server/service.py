@@ -5,7 +5,6 @@ app = Flask(__name__)
 
 @app.route('/search-recipes', methods=['GET'])
 def search_recipes():
-    # call James' code here
     return get_recipes()
 
 @app.route('/get-recipe-details')

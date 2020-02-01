@@ -1,11 +1,14 @@
 import requests
 from flask import request
+import json
 
 #In: payload with any combination of: query(name), cuisine, diet, intolerences
 #Out: list of recipies that match the parameters
 def get_recipes():
 
-    apiKey = "07712accff1746d6a80e64c71cf4a73e"
+    with open('credentials.json', 'r') as f:
+        creds = json.loads(f.read())
+        apiKey = creds['spoonacular_api_key']
 
     query = request.form.get('query', '')
     cuisine = request.form.get('cuisine', '')
