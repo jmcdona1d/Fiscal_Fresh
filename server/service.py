@@ -1,11 +1,12 @@
-from flask import Flask
-from ordering import order
+from flask import Flask, request
+# from ordering import order
+from recipe_search import get_recipes
 app = Flask(__name__)
 
-@app.route('/search-recipes')
+@app.route('/search-recipes', methods=['GET'])
 def search_recipes():
     # call James' code here
-    return "a"
+    return get_recipes()
 
 @app.route('/get-recipe-details')
 def get_recipe_details():
