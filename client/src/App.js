@@ -293,19 +293,22 @@ class App extends React.Component {
         const data = {
           query: "chicken"
         }
-        
-        let self = this;
-        axios.defaults.port = 5000;
-    
-        axios.get('http://127.0.0.1:5000/search-recipes', {query:"chicken"})
-          .then(res => {
-            console.log(res);
-            
-              self.setState({recipes: res.data});
-              
-            
-            console.log(self.state);
-          });
+        var myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
+
+var raw = JSON.stringify({"query":"sausage","cuisine":"italian","intolerences":""});
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+fetch("/search-recipes", requestOptions)
+  .then(response => response.text())
+  .then(result => console.log(result))
+  .catch(error => console.log('error', error));
       }
       
 
