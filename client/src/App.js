@@ -490,11 +490,11 @@ class App extends React.Component {
         fetch("/recipe_history", requestOptions5)
                 .then(response => response.text())
                 .then(result =>{
-                    var json = JSON.parse(result);    
-
-                    this.setState({
-                        history: json
-                })
+                    // var json = JSON.parse(result);    
+                    console.log(result)
+                    //this.setState({
+                       // history: json
+                //})
             console.log(this.state.history)
                 })
 
