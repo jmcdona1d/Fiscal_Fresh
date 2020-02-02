@@ -347,11 +347,13 @@ class App extends React.Component {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
+        var raw = JSON.stringify({"id": item['id']});
+
 
         var requestOptions = {
             method: 'POST',
             headers: myHeaders,
-            body: raw1,
+            body: raw,
             redirect: 'follow'
         };
         fetch("/search-recipes", requestOptions)
@@ -373,9 +375,9 @@ class App extends React.Component {
         //Probably have to refresh page to reload results unless we can avoid that somehow
 
         var raw = JSON.stringify({"query":this.state.query});
-
-        var raw = JSON.stringify({"id": item['id']});
-
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        
         var requestOptions = {
         method: 'POST',
         headers: myHeaders,
