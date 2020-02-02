@@ -19,8 +19,9 @@ def get_recipes():
     cuisine = request_body.get('cuisine', '')
     diet = request_body.get('diet', '')
     intolerences = request_body.get('intolerences', '')
+    number = request_body.get('number','')
 
-    url = "https://api.spoonacular.com/recipes/search?apiKey={}&query={}&cuisine={}&diet={}&intolerences={}&instructionsRequired=true".format(apiKey,query,cuisine,diet,intolerences)
+    url = "https://api.spoonacular.com/recipes/search?apiKey={}&query={}&cuisine={}&diet={}&intolerences={}&instructionsRequired=true&number={}".format(apiKey,query,cuisine,diet,intolerences,number)
     payload = {}
     headers= {}
 
