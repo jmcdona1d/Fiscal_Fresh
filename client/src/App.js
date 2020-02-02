@@ -31,34 +31,34 @@ const source = [{
 function SampleNextArrow(props) {
     const { className, style, onClick } = props;
     return (
-      <div
-        className={className}
-        style={{ ...style, display: "block", background: "red" }}
-        onClick={onClick}
-      />
+        <div
+            className={className}
+            style={{ ...style, display: "block", background: "red" }}
+            onClick={onClick}
+        />
     );
-  }
-  
-  function SamplePrevArrow(props) {
+}
+
+function SamplePrevArrow(props) {
     const { className, style, onClick } = props;
     return (
-      <div
-        className={className}
-        style={{ ...style, display: "block", background: "green" }}
-        onClick={onClick}
-      />
+        <div
+            className={className}
+            style={{ ...style, display: "block", background: "green" }}
+            onClick={onClick}
+        />
     );
-  }
+}
 
 
 
 class App extends React.Component {
-    
+
     constructor(props) {
         super(props);
         this.childLook = React.createRef();
 
-        
+
 
         this.state = {
             results: [
@@ -172,49 +172,49 @@ class App extends React.Component {
             isStale: false,
             list: [
                 {
-                    title:"Butter Chicken",
-                    desc:"Lorem Ipsum",
-                    calories:"500",
-                    servings:"4",
-                    timeCook:"30"
+                    title: "Butter Chicken",
+                    desc: "Lorem Ipsum",
+                    calories: "500",
+                    servings: "4",
+                    timeCook: "30"
                 },
                 {
-                    title:"Butter Chicken",
-                    desc:"Lorem Ipsum",
-                    calories:"500",
-                    servings:"4",
-                    timeCook:"30"
+                    title: "Butter Chicken",
+                    desc: "Lorem Ipsum",
+                    calories: "500",
+                    servings: "4",
+                    timeCook: "30"
                 },
                 {
-                    title:"Veggie Pizza",
-                    desc:"Lorem Ipsum",
-                    calories:"500",
-                    servings:"4",
-                    timeCook:"30"
+                    title: "Veggie Pizza",
+                    desc: "Lorem Ipsum",
+                    calories: "500",
+                    servings: "4",
+                    timeCook: "30"
                 },
                 {
-                    title:"Butter Chicken",
-                    desc:"Lorem Ipsum",
-                    calories:"500",
-                    servings:"4",
-                    timeCook:"30"
+                    title: "Butter Chicken",
+                    desc: "Lorem Ipsum",
+                    calories: "500",
+                    servings: "4",
+                    timeCook: "30"
                 },
                 {
-                    title:"Thai Red Curry",
-                    desc:"Lorem Ipsum",
-                    calories:"500",
-                    servings:"4",
-                    timeCook:"30"
+                    title: "Thai Red Curry",
+                    desc: "Lorem Ipsum",
+                    calories: "500",
+                    servings: "4",
+                    timeCook: "30"
                 },
                 {
-                    title:"Greek Chicken",
-                    desc:"Lorem Ipsum",
-                    calories:"500",
-                    servings:"4",
-                    timeCook:"30"
+                    title: "Greek Chicken",
+                    desc: "Lorem Ipsum",
+                    calories: "500",
+                    servings: "4",
+                    timeCook: "30"
                 }
             ],
-            
+
             filtered: [],
             category1: [],
             category2: [],
@@ -223,7 +223,7 @@ class App extends React.Component {
             history: []
 
         }
-        
+
 
         this.handleChange = this.handleChange.bind(this);
         this.handlePageLoad = this.handlePageLoad.bind(this);
@@ -235,14 +235,15 @@ class App extends React.Component {
 
     state = initialState
 
-    handleResultSelect = (e, { result }) => this.setState({ value: result.title })
+
+
 
     componentDidMount() {
         this.setState({
-          filtered: this.state.list
+            filtered: this.state.category1
         });
-      }
-      
+    }
+
     handleAddToCart(item) {
         // user must have already signed in
         // would be good to prompt if they haven't
@@ -250,79 +251,80 @@ class App extends React.Component {
         // add the recipe to cart
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        
+
         var raw = JSON.stringify(item);
-        
+
         var requestOptions = {
-          method: 'POST',
-          headers: myHeaders,
-          body: raw,
-          redirect: 'follow'
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
         };
 
         var requestOptions2 = {
             method: 'GET',
             redirect: 'follow'
-          };
-        
+        };
+
         fetch("/add-to-cart", requestOptions)
-          .then(response => response.text())
-          .then(result =>{ console.log(result)
-            fetch("/recipe_history", requestOptions2)
-                .then(response => response.text())
-                .then(result =>{
-                    var json = JSON.parse(result);    
+            .then(response => response.text())
+            .then(result => {
+                console.log(result)
+                fetch("/recipe_history", requestOptions2)
+                    .then(response => response.text())
+                    .then(result => {
+                        var json = JSON.parse(result);
 
-                    this.setState({
-                        history: json
-                })
-            console.log(this.state.history)
-                })
-          })
-          .catch(error => {console.log('error', error)}); //if there are errors, its probably because the user hasn't signed in
+                        this.setState({
+                            history: json
+                        })
+                        console.log(this.state.history)
+                    })
+            })
+            .catch(error => { console.log('error', error) }); //if there are errors, its probably because the user hasn't signed in
 
-        
+
     }
-      
-     
+
+
 
     handleChange(e) {
 
         console.log(this.state.filtered);
         console.log(this.state.list);
         // Variable to hold the original version of the list
-    let currentList = [];
+        let currentList = [];
         // Variable to hold the filtered list before putting into state
-    let newList = [];
+        let newList = [];
 
         // If the search bar isn't empty
-    if (e.target.value !== "") {
+        if (e.target.value !== "") {
             // Assign the original list to currentList
-      currentList = this.state.list;
+            currentList = this.state.category1;
 
-      
+
 
             // Use .filter() to determine which items should be displayed
             // based on the search terms
-      newList = currentList.filter(item => {
+            newList = currentList.filter(item => {
                 // change current item to lowercase
-        const lc = item.toLowerCase();
+                const lc = item.toLowerCase();
                 // change search term to lowercase
-        const filter = e.target.value.toLowerCase();
+                const filter = e.target.value.toLowerCase();
                 // check to see if the current list item includes the search term
                 // If it does, it will be added to newList. Using lowercase eliminates
                 // issues with capitalization in search terms and search content
-        return lc.includes(filter);
-      });
-    } else {
+                return lc.includes(filter);
+            });
+        } else {
             // If the search bar is empty, set newList to original task list
-      newList = this.state.list;
-    }
+            newList = this.state.list;
+        }
         // Set the filtered state based on what our rules added to newList
-    this.setState({
-      filtered: newList
-    });
-  }
+        this.setState({
+            filtered: newList
+        });
+    }
 
     handleSearchChange = (e, { value }) => {
         this.setState({ isLoading: true, value })
@@ -335,7 +337,7 @@ class App extends React.Component {
 
             this.setState({
                 isLoading: false,
-                results: _.filter(source, isMatch),
+                filtered: _.filter(this.state.category2, isMatch),
             })
         }, 300)
     }
@@ -346,41 +348,41 @@ class App extends React.Component {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
-        var raw = JSON.stringify({"id": item['id']});
+        var raw = JSON.stringify({ "id": item['id'] });
 
         var requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow'
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
         };
 
         fetch("/get-recipe-details", requestOptions)
-        .then(response => response.text())
-        .then(result => console.log(result))
-        .catch(error => console.log('error', error));
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log('error', error));
 
     }
 
 
-    handleRewriteHistory(childHistory){
+    handleRewriteHistory(childHistory) {
         const fieldEditor = this.childLook.current;
 
         this.setState({ history: childHistory })
     }
-  
+
 
     handlePageLoad(event) {
-        
+
         console.log("hello");
 
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
-        var raw = JSON.stringify({"query":"","cuisine":"","intolerences":"","diet":"Vegetarian"});
-        var raw2 = JSON.stringify({"query":"","cuisine":"","intolerences":"","diet":"ketogenic"});
-        var raw3 = JSON.stringify({"query":"","cuisine":"","intolerences":"","diet":"Vegan", "number":20});
-        var raw4 =  JSON.stringify({"maxCalories":"600","minProtein": "10"});
+        var raw = JSON.stringify({ "query": "", "cuisine": "", "intolerences": "", "diet": "Vegetarian" });
+        var raw2 = JSON.stringify({ "query": "", "cuisine": "", "intolerences": "", "diet": "ketogenic" });
+        var raw3 = JSON.stringify({ "query": "", "cuisine": "", "intolerences": "", "diet": "Vegan", "number": 20 });
+        var raw4 = JSON.stringify({ "maxCalories": "600", "minProtein": "10" });
 
 
 
@@ -415,91 +417,98 @@ class App extends React.Component {
         var requestOptions5 = {
             method: 'GET',
             redirect: 'follow'
-          };
+        };
 
         fetch("/search-recipes", requestOptions)
-        .then(response => response.text())
-        .then(result => {console.log(result);
-            
-            var json = JSON.parse(result);
-            var newjson = []
-            for(var i = 0; i < json.length; i++){
-                var entry = json[i]["recipe"];
+            .then(response => response.text())
+            .then(result => {
+                console.log(result);
 
-                // entry["id"] = entry["url"];
-                // entry["title"] = entry["label"];
-                // entry["timeCook"] = entry["totalTime"];
-                // entry["servings"] = entry["yield"];
-                // const cals = Math.round(entry["calories"]);
-                
-                // entry["calories"] = cals;
-                // entry["image"] = entry["image"];
-                // const imgArr = []
-                // imgArr.push( entry["image"]);
-                // entry["imageUrls"] = imgArr;
+                var json = JSON.parse(result);
+                var newjson = []
+                for (var i = 0; i < json.length; i++) {
+                    var entry = json[i]["recipe"];
 
-                newjson.push(entry);
-            }
+                    // entry["id"] = entry["url"];
+                    // entry["title"] = entry["label"];
+                    // entry["timeCook"] = entry["totalTime"];
+                    // entry["servings"] = entry["yield"];
+                    // const cals = Math.round(entry["calories"]);
 
-            this.setState({
-                category1: json
+                    // entry["calories"] = cals;
+                    // entry["image"] = entry["image"];
+                    // const imgArr = []
+                    // imgArr.push( entry["image"]);
+                    // entry["imageUrls"] = imgArr;
+
+                    newjson.push(entry);
+                }
+
+                this.setState({
+                    category1: json
+                })
+                console.log(this.state.category1)
             })
-            console.log(this.state.category1)
-        })
-        .catch(error => console.log('error', error));
+            .catch(error => console.log('error', error));
 
         fetch("/search-recipes", requestOptions2)
-        .then(response => response.text())
-        .then(result => {console.log(result);
-            
-            var json = JSON.parse(result);    
+            .then(response => response.text())
+            .then(result => {
+                console.log(result);
 
-            this.setState({
-                category2: json
+                var json = JSON.parse(result);
+
+                this.setState({
+                    category2: json
+                })
+                console.log(this.state.category2)
             })
-            console.log(this.state.category2)
-        })
-        .catch(error => console.log('error', error));
+            .catch(error => console.log('error', error));
 
         fetch("/search-recipes", requestOptions3)
-        .then(response => response.text())
-        .then(result => {console.log(result);
-            
-            var json = JSON.parse(result);    
+            .then(response => response.text())
+            .then(result => {
+                console.log(result);
 
-            this.setState({
-                category3: json
+                var json = JSON.parse(result);
+
+                this.setState({
+                    category3: json
+                })
+                console.log(this.state.category3)
             })
-            console.log(this.state.category3)
-        })
-        .catch(error => console.log('error', error));
+            .catch(error => console.log('error', error));
 
         fetch("/search-recipes-nutrition", requestOptions4)
-        .then(response => response.text())
-        .then(result => {console.log(result);
-            
-            var json = JSON.parse(result);    
+            .then(response => response.text())
+            .then(result => {
+                console.log(result);
 
-            this.setState({
-                category4: json
+                var json = JSON.parse(result);
+
+                this.setState({
+                    category4: json
+                })
+                console.log(this.state.category4)
             })
-            console.log(this.state.category4)
-        })
-        .catch(error => console.log('error', error));
+            .catch(error => console.log('error', error));
 
         fetch("/recipe_history", requestOptions5)
-                .then(response => response.text())
-                .then(result =>{
-                    // var json = JSON.parse(result);    
-                    console.log(result)
-                    //this.setState({
-                       // history: json
+            .then(response => response.text())
+            .then(result => {
+                // var json = JSON.parse(result);    
+                console.log(result)
+                //this.setState({
+                // history: json
                 //})
-            console.log(this.state.history)
-                })
+                console.log(this.state.history)
+            })
+        this.setState({
+            filtered: this.state.category1
+        });
 
     }
-      
+
 
     render() {
         const { isLoading, value, results, filtered } = this.state
@@ -509,7 +518,7 @@ class App extends React.Component {
             infinite: true,
             arrows: true,
             speed: 500,
-            
+
             autoplaySpeed: 100,
             slidesToShow: 3,
             slidesToScroll: 1,
@@ -518,11 +527,11 @@ class App extends React.Component {
         };
         return (
             <div className="">
-            {console.log(this.state.results)}
+                {console.log(this.state.results)}
 
                 <header className="header-area header-sticky">
                     <div className="container">
-                        
+
                         <div className="row">
                             <div className="col-12">
                                 <nav className="main-nav">
@@ -553,8 +562,8 @@ class App extends React.Component {
 
                                     <h1 style={{ fontWeight: 600 }}>Recipes       <i className="fa fa-long-arrow-right"></i>   Groceries</h1>
                                     <h4 className="compress">Browse your favourite recipes by cusine, meal type, various diets. Find some you like, add to cart and we will order the groceries you need.</h4>
-                                    <div style={{paddingBottom:'20px'}}>
-                                    <a href="" className="main-button-slider">Learn More</a>
+                                    <div style={{ paddingBottom: '20px' }}>
+                                        <a href="" className="main-button-slider">Learn More</a>
                                     </div>
                                     {//<a href="./sponsor.js" className="main-button-donate">Sponsor Us</a>
                                     }
@@ -610,185 +619,185 @@ class App extends React.Component {
                             <div className="col-lg-12">
                                 <div>
                                     <h2 style={{ marginTop: '175px', marginLeft: '50px', marginBottom: '90px', fontWeight: '600' }}> Explore Different Healthy Diets!</h2>
-{/*Slider*/}                        <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Vegetarian</h3>
+                                    {/*Slider*/}                        <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Vegetarian</h3>
                                     <div className="margin-bottom-60">
                                         <Slider {...settings}>
-                                        {this.state.category1.map(item => (
-                                            <div className="mb-5 padding-10">
-                                                <div className="card" >
-                                                    <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
-                                                    <img src={this.state.baseUri+"/"+item.imageUrls} onClick={() => this.handleGetRecipe(item)} style={{ width: '100%' }}></img>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="card-body col-xl-8 col-lg-8 col-md-8">
-
-
-                                                            <h5 className="card-title">{item.title}</h5>
-                                                            <p className="card-text">{item.desc}</p>
+                                            {this.state.category1.map(item => (
+                                                <div className="mb-5 padding-10">
+                                                    <div className="card" >
+                                                        <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
+                                                            <img src={this.state.baseUri + "/" + item.imageUrls} onClick={() => this.handleGetRecipe(item)} style={{ width: '100%' }}></img>
                                                         </div>
-                                                        <div className="col-xl-4 col-lg-4 col-md-4 product" style={{marginTop:'30px'}}>
-                                                            
-                                                            <ul className="social">
-                                                                
-                                                                <li><a href=""><i className="recipeIcons fa fa-clock-o" ></i></a>{item.readyInMinutes}   mins</li>
-                                                                <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.servings}   servings</li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
+                                                        <div className="row">
+                                                            <div className="card-body col-xl-8 col-lg-8 col-md-8">
 
-                                                    <div className="card-footer " style={{ textAlign: 'right' }}>
-                                                        <a href="#" className="btn btn-sm" onClick={() => this.handleAddToCart(item)} style={{backgroundColor:"#6cd34c", color:"#fff"}}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
+
+                                                                <h5 className="card-title">{item.title}</h5>
+                                                                <p className="card-text">{item.desc}</p>
+                                                            </div>
+                                                            <div className="col-xl-4 col-lg-4 col-md-4 product" style={{ marginTop: '30px' }}>
+
+                                                                <ul className="social">
+
+                                                                    <li><a href=""><i className="recipeIcons fa fa-clock-o" ></i></a>{item.readyInMinutes}   mins</li>
+                                                                    <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.servings}   servings</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="card-footer " style={{ textAlign: 'right' }}>
+                                                            <a href="#" className="btn btn-sm" onClick={() => this.handleAddToCart(item)} style={{ backgroundColor: "#6cd34c", color: "#fff" }}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
                                             ))}
-                                            
+
                                         </Slider>
                                     </div>
                                     <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Keto</h3>
                                     <div className="margin-bottom-60">
                                         <Slider {...settings}>
-                                        {this.state.category2.map(item => (
-                                            <div className="mb-5 padding-10">
-                                                <div className="card" >
-                                                    <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
-                                                        <img src={this.state.baseUri+"/"+item.imageUrls} onClick={() => this.handleGetRecipe(item)} style={{ width: '100%' }}></img>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="card-body col-xl-8 col-lg-8 col-md-8">
-
-
-                                                            <h5 className="card-title">{item.title}</h5>
-                                                            <p className="card-text">{item.desc}</p>
+                                            {this.state.category2.map(item => (
+                                                <div className="mb-5 padding-10">
+                                                    <div className="card" >
+                                                        <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
+                                                            <img src={this.state.baseUri + "/" + item.imageUrls} onClick={() => this.handleGetRecipe(item)} style={{ width: '100%' }}></img>
                                                         </div>
-                                                        <div className="col-xl-4 col-lg-4 col-md-4 product" style={{marginTop:'30px'}}>
-                                                            
-                                                            <ul className="social">
-                                                                
-                                                                <li><a href=""><i className="recipeIcons fa fa-clock-o" ></i></a>{item.readyInMinutes}   mins</li>
-                                                                <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.servings}   servings</li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
+                                                        <div className="row">
+                                                            <div className="card-body col-xl-8 col-lg-8 col-md-8">
 
-                                                    <div className="card-footer " style={{ textAlign: 'right' }}>
-                                                        <a href="#" className="btn btn-sm" onClick={() => this.handleAddToCart(item)} style={{backgroundColor:"#6cd34c", color:"#fff"}}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
+
+                                                                <h5 className="card-title">{item.title}</h5>
+                                                                <p className="card-text">{item.desc}</p>
+                                                            </div>
+                                                            <div className="col-xl-4 col-lg-4 col-md-4 product" style={{ marginTop: '30px' }}>
+
+                                                                <ul className="social">
+
+                                                                    <li><a href=""><i className="recipeIcons fa fa-clock-o" ></i></a>{item.readyInMinutes}   mins</li>
+                                                                    <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.servings}   servings</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="card-footer " style={{ textAlign: 'right' }}>
+                                                            <a href="#" className="btn btn-sm" onClick={() => this.handleAddToCart(item)} style={{ backgroundColor: "#6cd34c", color: "#fff" }}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
                                             ))}
-                                            
+
                                         </Slider>
                                     </div>
                                     <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Plant-Based</h3>
                                     <div className="margin-bottom-60">
                                         <Slider {...settings}>
-                                        {this.state.category3.map(item => (
-                                            <div className="mb-5 padding-10">
-                                                <div className="card" >
-                                                    <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
-                                                        <img src={this.state.baseUri+"/"+item.imageUrls} onClick={() => this.handleGetRecipe(item)} style={{ width: '100%' }}></img>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="card-body col-xl-8 col-lg-8 col-md-8">
-
-
-                                                            <h5 className="card-title">{item.title}</h5>
-                                                            <p className="card-text">{item.desc}</p>
+                                            {this.state.category3.map(item => (
+                                                <div className="mb-5 padding-10">
+                                                    <div className="card" >
+                                                        <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
+                                                            <img src={this.state.baseUri + "/" + item.imageUrls} onClick={() => this.handleGetRecipe(item)} style={{ width: '100%' }}></img>
                                                         </div>
-                                                        <div className="col-xl-4 col-lg-4 col-md-4 product" style={{marginTop:'30px'}}>
-                                                            
-                                                            <ul className="social">
-                                                                
-                                                                <li><a href=""><i className="recipeIcons fa fa-clock-o" ></i></a>{item.readyInMinutes}   mins</li>
-                                                                <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.servings}   servings</li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
+                                                        <div className="row">
+                                                            <div className="card-body col-xl-8 col-lg-8 col-md-8">
 
-                                                    <div className="card-footer " style={{ textAlign: 'right' }}>
-                                                        <a href="#" className="btn btn-sm" style={{backgroundColor:"#6cd34c", color:"#fff"}}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
+
+                                                                <h5 className="card-title">{item.title}</h5>
+                                                                <p className="card-text">{item.desc}</p>
+                                                            </div>
+                                                            <div className="col-xl-4 col-lg-4 col-md-4 product" style={{ marginTop: '30px' }}>
+
+                                                                <ul className="social">
+
+                                                                    <li><a href=""><i className="recipeIcons fa fa-clock-o" ></i></a>{item.readyInMinutes}   mins</li>
+                                                                    <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.servings}   servings</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="card-footer " style={{ textAlign: 'right' }}>
+                                                            <a href="#" className="btn btn-sm" style={{ backgroundColor: "#6cd34c", color: "#fff" }}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
                                             ))}
-                                            
+
                                         </Slider>
                                     </div>
                                     <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Body Builder</h3>
                                     <div className="margin-bottom-60">
                                         <Slider {...settings}>
-                                        {this.state.category4.map(item => (
-                                            <div className="mb-5 padding-10">
-                                                <div className="card" >
-                                                    <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
-                                                        <img src={item.image} style={{ width: '100%' }}></img>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="card-body col-xl-8 col-lg-8 col-md-8">
-
-
-                                                            <h5 className="card-title">{item.title}</h5>
-                                                            <p className="card-text">{item.desc}</p>
+                                            {this.state.category4.map(item => (
+                                                <div className="mb-5 padding-10">
+                                                    <div className="card" >
+                                                        <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
+                                                            <img src={item.image} style={{ width: '100%' }}></img>
                                                         </div>
-                                                        <div className="col-xl-4 col-lg-4 col-md-4 product" style={{marginTop:'30px'}}>
-                                                            
-                                                            <ul className="social">
-                                                            <li><a href=""><i className="recipeIcons fa fa-bolt" ></i></a>{item.calories}kcal</li>
-                                                                <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.protein}   g of protein</li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
+                                                        <div className="row">
+                                                            <div className="card-body col-xl-8 col-lg-8 col-md-8">
 
-                                                    <div className="card-footer " style={{ textAlign: 'right' }}>
-                                                        <a href="#" className="btn btn-sm" style={{backgroundColor:"#6cd34c", color:"#fff"}}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
+
+                                                                <h5 className="card-title">{item.title}</h5>
+                                                                <p className="card-text">{item.desc}</p>
+                                                            </div>
+                                                            <div className="col-xl-4 col-lg-4 col-md-4 product" style={{ marginTop: '30px' }}>
+
+                                                                <ul className="social">
+                                                                    <li><a href=""><i className="recipeIcons fa fa-bolt" ></i></a>{item.calories}kcal</li>
+                                                                    <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.protein}   g of protein</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="card-footer " style={{ textAlign: 'right' }}>
+                                                            <a href="#" className="btn btn-sm" style={{ backgroundColor: "#6cd34c", color: "#fff" }}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
                                             ))}
-                                            
+
                                         </Slider>
                                         <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}>Previously Purchased</h3>
-                                    <div className="margin-bottom-60">
-                                        <Slider {...settings}>
-                                        {this.state.category1.map(item => (
-                                            <div className="mb-5 padding-10">
-                                                <div className="card" >
-                                                    <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
-                                                    <img src={this.state.baseUri+"/"+item.imageUrls} style={{ width: '100%' }}></img>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="card-body col-xl-8 col-lg-8 col-md-8">
+                                        <div className="margin-bottom-60">
+                                            <Slider {...settings}>
+                                                {this.state.category1.map(item => (
+                                                    <div className="mb-5 padding-10">
+                                                        <div className="card" >
+                                                            <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
+                                                                <img src={this.state.baseUri + "/" + item.imageUrls} style={{ width: '100%' }}></img>
+                                                            </div>
+                                                            <div className="row">
+                                                                <div className="card-body col-xl-8 col-lg-8 col-md-8">
 
 
-                                                            <h5 className="card-title">{item.title}</h5>
-                                                            <p className="card-text">{item.desc}</p>
+                                                                    <h5 className="card-title">{item.title}</h5>
+                                                                    <p className="card-text">{item.desc}</p>
+                                                                </div>
+                                                                <div className="col-xl-4 col-lg-4 col-md-4 product" style={{ marginTop: '30px' }}>
+
+                                                                    <ul className="social">
+
+                                                                        <li><a href=""><i className="recipeIcons fa fa-clock-o" ></i></a>{item.readyInMinutes}   mins</li>
+                                                                        <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.servings}   servings</li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="card-footer " style={{ textAlign: 'right' }}>
+                                                                <a href="#" className="btn btn-sm" onClick={() => this.handleAddToCart(item)} style={{ backgroundColor: "#6cd34c", color: "#fff" }}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
+                                                            </div>
                                                         </div>
-                                                        <div className="col-xl-4 col-lg-4 col-md-4 product" style={{marginTop:'30px'}}>
-                                                            
-                                                            <ul className="social">
-                                                                
-                                                                <li><a href=""><i className="recipeIcons fa fa-clock-o" ></i></a>{item.readyInMinutes}   mins</li>
-                                                                <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.servings}   servings</li>
-                                                            </ul>
-                                                        </div>
                                                     </div>
+                                                ))}
 
-                                                    <div className="card-footer " style={{ textAlign: 'right' }}>
-                                                        <a href="#" className="btn btn-sm" onClick={() => this.handleAddToCart(item)} style={{backgroundColor:"#6cd34c", color:"#fff"}}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            ))}
-                                            
-                                        </Slider>
-                                    </div>
+                                            </Slider>
+                                        </div>
                                     </div>
 
 
-                                   
 
-                                    
+
+
 
 
                                     {/*Search*/}
@@ -798,8 +807,10 @@ class App extends React.Component {
                                             <Search onChange={this.handleChange}
                                                 loading={isLoading}
                                                 onResultSelect={this.handleResultSelect}
-                                                
-                                                results={results}
+                                                onSearchChange={_.debounce(this.handleSearchChange, 500, {
+                                                    leading: true,
+                                                })}
+                                                results={filtered}
                                                 value={value}
                                                 {...this.props}
                                             />
@@ -809,24 +820,37 @@ class App extends React.Component {
                                                 <h2>Recipes</h2>
                                                 <div className="row">
                                                     {this.state.filtered.map(item => (
-                                                        <div className="mb-5 padding-10 col-md-4">
-                                                        <div className="card" >
-                                                            <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
-                                                                <img src={item.image} style={{ width: '100%' }}></img>
+                                                        <div className="col-md-4 col-lg-4 mb-5 padding-10">
+                                                            <div className="card" >
+                                                                <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
+                                                                    <img src={this.state.baseUri + "/" + item.imageUrls} style={{ width: '100%' }}></img>
+                                                                </div>
+                                                                <div className="row">
+                                                                    <div className="card-body col-xl-8 col-lg-8 col-md-8">
+
+
+                                                                        <h5 className="card-title">{item.title}</h5>
+                                                                        <p className="card-text">{item.desc}</p>
+                                                                    </div>
+                                                                    <div className="col-xl-4 col-lg-4 col-md-4 product" style={{ marginTop: '30px' }}>
+
+                                                                        <ul className="social">
+
+                                                                            <li><a href=""><i className="recipeIcons fa fa-clock-o" ></i></a>{item.readyInMinutes}   mins</li>
+                                                                            <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.servings}   servings</li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div className="card-footer " style={{ textAlign: 'right' }}>
+                                                                    <a href="#" className="btn btn-sm" onClick={() => this.handleAddToCart(item)} style={{ backgroundColor: "#6cd34c", color: "#fff" }}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
+                                                                </div>
                                                             </div>
-                                                        <div key={item} className="card-body col-xl-12 col-lg-12 col-md-12">
-                                                            <h4 className="card-title">{item.title}</h4>
-                                                            <p className="card-text">{item.desc}</p>
-                                                        </div>
-                                                        <div className="card-footer " style={{ textAlign: 'right' }}>
-                                                        <a href="#" className="btn btn-success btn-sm" ><i className="fa fa-shopping-cart" style={{ color: '#fff' }}></i> Add to Cart</a>
-                                                    </div>
-                                                        </div>
                                                         </div>
                                                     ))}
                                                 </div>
 
-                                                
+
 
                                                 {/*<pre style={{ overflowX: 'auto' }}>
               {JSON.stringify(this.state, null, 2)}
