@@ -47,6 +47,11 @@ def add_history(request_body):
     # edit document that already exists
     else:
         entry = records.find_one({'email':email})
+        for recipe in entry['recipes']:
+            if recipe['id'] == additions['id']:
+                return {
+                    'result': "success"
+                }
         entry['recipes'].append(additions)        
         records.update_one({'email':email}, {"$set":{'recipes': entry['recipes']}})
     return {
