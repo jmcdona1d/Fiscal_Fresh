@@ -50,8 +50,6 @@ function SampleNextArrow(props) {
     );
   }
 
-<<<<<<< HEAD
-=======
 function login() {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -70,7 +68,6 @@ function login() {
     .catch(error => console.log('error', error));
 }
 
->>>>>>> c92a1269fe7fb4fe862d64c79a5b577479dba9b5
 
 
 class App extends React.Component {
@@ -259,9 +256,6 @@ class App extends React.Component {
           filtered: this.state.list
         });
       }
-<<<<<<< HEAD
-    
-=======
       
     handleAddToCart(item) {
         // user must have already signed in
@@ -288,7 +282,6 @@ class App extends React.Component {
 
     }
       
->>>>>>> c92a1269fe7fb4fe862d64c79a5b577479dba9b5
      
 
     handleChange(e) {
