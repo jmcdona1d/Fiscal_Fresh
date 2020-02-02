@@ -77,7 +77,7 @@ def encode_auth_token(email, pw):
 
     try:
         payload = {
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, minutes=30),
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, minutes=60),
             'iat': datetime.datetime.utcnow(),
             'email': email,
             'password': pw
