@@ -7,7 +7,7 @@ with open('credentials.json', 'r') as f:
     creds = json.loads(f.read())
     dbKey = creds['database_key']
 
-dbconnection = "mongodb+srv://qhacks-db:{}@recipiestorage-bqfba.mongodb.net/test?retryWrites=true&w=majority".format(dbKey)
+dbconnection = "mongodb+srv://qhacks2020:{}@cluster0-kq8wa.gcp.mongodb.net/test?retryWrites=true&w=majority".format(dbKey)
 client = MongoClient(dbconnection)
 
 db = client.get_database('recipe_history')

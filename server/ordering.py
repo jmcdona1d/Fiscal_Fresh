@@ -121,8 +121,8 @@ def handle_order(request_body, auth_info):
     ingredients, cart_id = get_ingredients(session, request_body)
     response = add_items_to_cart(session, ingredients, cart_id)
     if response.status_code == 200:
-        print('added to cart')
         # succesfully added to cart, store user recipe history
         add_recipe_history(request_body)
+        print('added to cart and user history')
 
     return response.text
