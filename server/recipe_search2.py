@@ -7,26 +7,21 @@ import json
 #       list format: id, title, readyInMinutes, servings, image/imageURL
 def get_recipes():
 
-    # with open('credentials.json', 'r') as f:
-    #     creds = json.loads(f.read())
-    #     apiKey = creds['E_apiKey']
-    #     appKey = creds['E_appKey']
+    with open('credentials.json', 'r') as f:
+        creds = json.loads(f.read())
+        apiKey = creds['E_apiKey']
+        appKey = creds['E_appId']
 
     request_body = request.get_json()
     if not request_body:
         request_body = request.form
 
-    # query = request_body.get('query', '')
-    # cuisine = request_body.get('cuisine', '')
-    # diet = request_body.get('diet', '')
-    # intolerences = request_body.get('intolerences', '')
-
-    # url = "https://api.spoonacular.com/recipes/search?apiKey={}&query={}&cuisine={}&diet={}&intolerences={}&instructionsRequired=true".format(apiKey,query,cuisine,diet,intolerences)
+    query = request_body.get('query', '')
     
-    url = "https://api.edamam.com/search?q=Italian&app_id=9aff7ce9&app_key=164909b25bc0dee697e60303ceed41ba"
+    url = "https://api.edamam.com/search?q={}&app_id={}&app_key={}".format( query, appKey, apiKey)
     payload = {}
     headers= {}
 
     response = requests.request("GET", url, headers=headers, data = payload)
-
-    return response.text.encode('utf8')
+    r = json.loads(response.text.encode('utf8'))
+    return json.dumps(r['hits'])
