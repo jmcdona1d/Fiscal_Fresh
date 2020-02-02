@@ -849,7 +849,7 @@ class App extends React.Component {
 
                                     {/*Search*/}
 
-                                    <Grid style={{paddingBottom:'30px'}}>
+                                    <Grid style={{paddingBottom:'300px'}}>
                                         <Grid.Column width={5}>
                                             <Search className="col-md-4" onSearchChange={this.handleSearchChange}
                                                 value={value}
