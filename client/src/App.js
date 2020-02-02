@@ -341,11 +341,8 @@ class App extends React.Component {
         }, 300)
     }
 
-    handleSearchSubmit(){
-        //Define Query - call this method on submit of search function.
-        //Probably have to refresh page to reload results unless we can avoid that somehow
-
-        var raw = JSON.stringify({"query":this.state.query});
+    handleGetRecipe(item) {
+        // HEY BRIGGS!!! This method gets the recipe instructions when someone clicks on the recipe image if you want to display it somehow
 
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -371,6 +368,27 @@ class App extends React.Component {
         .catch(error => console.log('error', error));
     }
 
+    handleSearchSubmit(){
+        //Define Query - call this method on submit of search function.
+        //Probably have to refresh page to reload results unless we can avoid that somehow
+
+        var raw = JSON.stringify({"query":this.state.query});
+
+        var raw = JSON.stringify({"id": item['id']});
+
+        var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+        };
+
+        fetch("/get-recipe-details", requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+
+    }
 
 
     handleRewriteHistory(childHistory){
@@ -500,11 +518,11 @@ class App extends React.Component {
         fetch("/recipe_history", requestOptions5)
                 .then(response => response.text())
                 .then(result =>{
-                    var json = JSON.parse(result);    
-
-                    this.setState({
-                        history: json
-                })
+                    // var json = JSON.parse(result);    
+                    console.log(result)
+                    //this.setState({
+                       // history: json
+                //})
             console.log(this.state.history)
                 })
 
@@ -627,7 +645,7 @@ class App extends React.Component {
                                             <div className="mb-5 padding-10">
                                                 <div className="card" >
                                                     <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
-                                                    <img src={this.state.baseUri+"/"+item.imageUrls} style={{ width: '100%' }}></img>
+                                                    <img src={this.state.baseUri+"/"+item.imageUrls} onClick={() => this.handleGetRecipe(item)} style={{ width: '100%' }}></img>
                                                     </div>
                                                     <div className="row">
                                                         <div className="card-body col-xl-8 col-lg-8 col-md-8">
@@ -662,7 +680,7 @@ class App extends React.Component {
                                             <div className="mb-5 padding-10">
                                                 <div className="card" >
                                                     <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
-                                                        <img src={this.state.baseUri+"/"+item.imageUrls} style={{ width: '100%' }}></img>
+                                                        <img src={this.state.baseUri+"/"+item.imageUrls} onClick={() => this.handleGetRecipe(item)} style={{ width: '100%' }}></img>
                                                     </div>
                                                     <div className="row">
                                                         <div className="card-body col-xl-8 col-lg-8 col-md-8">
@@ -697,7 +715,7 @@ class App extends React.Component {
                                             <div className="mb-5 padding-10">
                                                 <div className="card" >
                                                     <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
-                                                        <img src={this.state.baseUri+"/"+item.imageUrls} style={{ width: '100%' }}></img>
+                                                        <img src={this.state.baseUri+"/"+item.imageUrls} onClick={() => this.handleGetRecipe(item)} style={{ width: '100%' }}></img>
                                                     </div>
                                                     <div className="row">
                                                         <div className="card-body col-xl-8 col-lg-8 col-md-8">
