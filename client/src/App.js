@@ -221,7 +221,8 @@ class App extends React.Component {
             category3: [],
             category4: [],
             history: [],
-            searchResult: []
+            searchResult: [],
+            query: ""
 
         }
 
@@ -341,6 +342,9 @@ class App extends React.Component {
                 filtered: _.filter(this.state.category2, isMatch),
             })
         }, 300)
+        
+
+        console.log(this.state.query)
     }
 
     handleGetRecipe(item) {
@@ -377,6 +381,7 @@ class App extends React.Component {
         //Probably have to refresh page to reload results unless we can avoid that somehow
 
         var raw = JSON.stringify({"query":this.state.query});
+        console.log(this.state.query)
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         
@@ -388,9 +393,17 @@ class App extends React.Component {
         };
 
         fetch("/get-recipe-details", requestOptions)
-            .then(response => response.text())
-            .then(result => console.log(result))
-            .catch(error => console.log('error', error));
+        .then(response => response.text())
+        .then(result => {console.log(result);
+            
+            var json = JSON.parse(result);    
+
+            this.setState({
+                filtered: json
+            })
+            console.log(this.state.filtered)
+        })
+        .catch(error => console.log('error', error));
 
     }
 
@@ -400,6 +413,10 @@ class App extends React.Component {
 
         this.setState({ history: childHistory })
     }
+
+    handleSearchChange(event) {
+        this.setState({value: event.target.value});
+      }
 
 
     handlePageLoad(event) {
@@ -557,7 +574,7 @@ class App extends React.Component {
         };
         return (
             <div className="">
-                {console.log(this.state.results)}
+                
 
                 <header className="header-area header-sticky">
                     <div className="container">
@@ -655,7 +672,7 @@ class App extends React.Component {
                                             {this.state.category1.map(item => (
                                                 <div className="mb-5 padding-10">
                                                     <div className="card" >
-                                                        <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
+                                                        <div style={{ objectFit: 'cover', width: 'auto', height: '170px', overflow: 'hidden' }}>
                                                             <img src={this.state.baseUri + "/" + item.imageUrls} onClick={() => this.handleGetRecipe(item)} style={{ width: '100%' }}></img>
                                                         </div>
                                                         <div className="row">
@@ -690,7 +707,7 @@ class App extends React.Component {
                                             {this.state.category2.map(item => (
                                                 <div className="mb-5 padding-10">
                                                     <div className="card" >
-                                                        <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
+                                                        <div style={{ objectFit: 'cover', width: 'auto', height: '170px', overflow: 'hidden' }}>
                                                             <img src={this.state.baseUri + "/" + item.imageUrls} onClick={() => this.handleGetRecipe(item)} style={{ width: '100%' }}></img>
                                                         </div>
                                                         <div className="row">
@@ -725,7 +742,7 @@ class App extends React.Component {
                                             {this.state.category3.map(item => (
                                                 <div className="mb-5 padding-10">
                                                     <div className="card" >
-                                                        <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
+                                                        <div style={{ objectFit: 'cover', width: 'auto', height: '170px', overflow: 'hidden' }}>
                                                             <img src={this.state.baseUri + "/" + item.imageUrls} onClick={() => this.handleGetRecipe(item)} style={{ width: '100%' }}></img>
                                                         </div>
                                                         <div className="row">
@@ -760,7 +777,7 @@ class App extends React.Component {
                                             {this.state.category4.map(item => (
                                                 <div className="mb-5 padding-10">
                                                     <div className="card" >
-                                                        <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
+                                                        <div style={{ objectFit: 'cover', width: 'auto', height: '170px', overflow: 'hidden' }}>
                                                             <img src={item.image} style={{ width: '100%' }}></img>
                                                         </div>
                                                         <div className="row">
@@ -793,7 +810,7 @@ class App extends React.Component {
                                                 {this.state.category1.map(item => (
                                                     <div className="mb-5 padding-10">
                                                         <div className="card" >
-                                                            <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
+                                                            <div style={{ objectFit: 'cover', width: 'auto', height: '170px', overflow: 'hidden' }}>
                                                                 <img src={this.state.baseUri + "/" + item.imageUrls} style={{ width: '100%' }}></img>
                                                             </div>
                                                             <div className="row">
@@ -832,19 +849,24 @@ class App extends React.Component {
 
                                     {/*Search*/}
 
-                                    <Grid>
-                                        <Grid.Column width={6}>
-                                            <Search onChange={this.handleChange}
+                                    <Grid style={{paddingBottom:'30px'}}>
+                                        <Grid.Column width={5}>
+                                            <Search className="col-md-4" onSearchChange={this.handleSearchChange}
+                                                value={value}
+                                                
                                                 loading={isLoading}
                                                 onResultSelect={this.handleResultSelect}
-                                                onSearchChange={_.debounce(this.handleSearchChange, 500, {
-                                                    leading: true,
-                                                })}
+                                                
                                                 results={filtered}
-                                                value={value}
+                                                
                                                 {...this.props}
                                             />
+                                            
+                                            
                                         </Grid.Column>
+                                        <Grid.Column width={1}><a className="btn btn-sm" onClick={() => this.handleSearchSubmit()} style={{ backgroundColor: "#6cd34c", color: "#fff" }}>Search<i className="fa fa-search" ></i> </a></Grid.Column>
+                                        
+
                                         <Grid.Column width={10}>
                                             <Segment>
                                                 <h2>Recipes</h2>
