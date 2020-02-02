@@ -220,7 +220,8 @@ class App extends React.Component {
             category2: [],
             category3: [],
             category4: [],
-            history: []
+            history: [],
+            searchResult: []
 
         }
 
@@ -350,6 +351,35 @@ class App extends React.Component {
 
         var raw = JSON.stringify({ "id": item['id'] });
 
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+        fetch("/search-recipes", requestOptions)
+        .then(response => response.text())
+        .then(result => {console.log(result);
+            
+            var json = JSON.parse(result);    
+
+            this.setState({
+                searchResult: json
+            })
+            console.log(this.state.category3)
+        })
+        .catch(error => console.log('error', error));
+    }
+
+    handleSearchSubmit(){
+        //Define Query - call this method on submit of search function.
+        //Probably have to refresh page to reload results unless we can avoid that somehow
+
+        var raw = JSON.stringify({"query":this.state.query});
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        
         var requestOptions = {
             method: 'POST',
             headers: myHeaders,
