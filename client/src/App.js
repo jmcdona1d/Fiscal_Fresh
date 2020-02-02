@@ -5,8 +5,6 @@ import logo from './logo.svg';
 import _ from 'lodash'
 import faker from 'faker'
 import { Search, Grid, Header, Segment } from 'semantic-ui-react'
-
-
 import './assets/css/qweb.css';
 import './assets/css/bootstrap.min.css';
 import './assets/css/font-awesome.css';
@@ -556,7 +554,7 @@ class App extends React.Component {
 
     }
 
-
+        
     render() {
         const { isLoading, value, results, filtered } = this.state
 
@@ -587,7 +585,7 @@ class App extends React.Component {
                         </a>
                                     <ul className="nav">
                                         <li><Sample ref={this.childLook} onChange={this.handleRewriteHistory.bind(this)}></Sample></li>
-                                        <li><h3 href="#"><i className="fa fa-shopping-cart" style={{ color: 'rgb(91, 206, 56)' }}></i> </h3></li>
+                                        <li><h3 href="#"><a href={'http://instacart.com'}><i className="fa fa-shopping-cart" style={{ color: 'rgb(91, 206, 56)' }}></i></a> </h3></li>
 
                                     </ul>
                                     <a className='menu-trigger'>
