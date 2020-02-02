@@ -1,6 +1,6 @@
 from flask import Flask, request
 from ordering import add_to_cart
-from recipe_search2 import get_recipes
+from recipe_search import get_recipes
 from recipe_ingredients import get_recipe_ingredients
 from user import get_recipe_history, login
 import database

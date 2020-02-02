@@ -26,4 +26,5 @@ def get_recipes():
 
     response = requests.request("GET", url, headers=headers, data = payload)
 
-    return response.text.encode('utf8')
+    r = json.loads(response.text.encode('utf8'))
+    return json.dumps(r['results'])
