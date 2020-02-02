@@ -213,13 +213,17 @@ class App extends React.Component {
                 }
             ],
             
-            filtered: []
+            filtered: [],
+            category1: [],
+            category2: []
 
         }
         
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handlePageLoad = this.handlePageLoad.bind(this);
+
+        this.handlePageLoad();
     }
 
     state = initialState
@@ -288,22 +292,37 @@ class App extends React.Component {
         }, 300)
     }
 
-    handleSubmit(event) {
+    handlePageLoad(event) {
         
         console.log("hello");
-        const data = {
-          query: "chicken"
-        }
+
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
-        var raw = JSON.stringify({"query":"sausage","cuisine":"italian","intolerences":""});
+        var raw = JSON.stringify({"query":"","cuisine":"","intolerences":"","diet":"Vegetarian"});
+        var raw2 = JSON.stringify({"query":"","cuisine":"","intolerences":"","diet":"ketogenic"});
+        var raw3 = JSON.stringify({"query":"","cuisine":"","intolerences":"","diet":"Vegan"});
+
 
         var requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow'
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        var requestOptions2 = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw2,
+            redirect: 'follow'
+        };
+
+        var requestOptions3 = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw3,
+            redirect: 'follow'
         };
 
         fetch("/search-recipes", requestOptions)
@@ -315,24 +334,51 @@ class App extends React.Component {
             for(var i = 0; i < json.length; i++){
                 var entry = json[i]["recipe"];
 
-                entry["title"] = entry["label"];
-                entry["timeCook"] = entry["totalTime"];
-                entry["servings"] = entry["yield"];
-                const cals = Math.round(entry["calories"]);
+                // entry["id"] = entry["url"];
+                // entry["title"] = entry["label"];
+                // entry["timeCook"] = entry["totalTime"];
+                // entry["servings"] = entry["yield"];
+                // const cals = Math.round(entry["calories"]);
                 
-                entry["calories"] = cals;
-                entry["image"] = entry["image"];
-                const imgArr = []
-                imgArr.push( entry["image"]);
-                entry["imageUrls"] = imgArr;
+                // entry["calories"] = cals;
+                // entry["image"] = entry["image"];
+                // const imgArr = []
+                // imgArr.push( entry["image"]);
+                // entry["imageUrls"] = imgArr;
 
                 newjson.push(entry);
             }
 
             this.setState({
-                results: newjson
+                category1: json
             })
-            console.log(this.state.results)
+            console.log(this.state.category1)
+        })
+        .catch(error => console.log('error', error));
+
+        fetch("/search-recipes", requestOptions2)
+        .then(response => response.text())
+        .then(result => {console.log(result);
+            
+            var json = JSON.parse(result);    
+
+            this.setState({
+                category2: json
+            })
+            console.log(this.state.category2)
+        })
+        .catch(error => console.log('error', error));
+
+        fetch("/search-recipes", requestOptions3)
+        .then(response => response.text())
+        .then(result => {console.log(result);
+            
+            var json = JSON.parse(result);    
+
+            this.setState({
+                category2: json
+            })
+            console.log(this.state.category2)
         })
         .catch(error => console.log('error', error));
     }
@@ -366,7 +412,7 @@ class App extends React.Component {
                                         Meal Prepper
                         </a>
                                     <ul className="nav">
-                                        <li><a href="#" className="main-button-slider" onClick={this.handleSubmit}>Sign Up</a></li>
+                                        <li><a href="#" className="main-button-slider" onClick={this.handlePageLoad}>Sign Up</a></li>
 
                                         <li><h3 href="#"><i className="fa fa-shopping-cart" style={{ color: 'rgb(91, 206, 56)' }}></i> </h3></li>
 
@@ -446,15 +492,15 @@ class App extends React.Component {
                         <div className="row">
                             <div className="col-lg-12">
                                 <div>
-                                    <h2 style={{ marginTop: '175px', marginLeft: '50px', marginBottom: '90px', fontWeight: '600' }}> Browse Recipes by Category Below.</h2>
-{/*Slider*/}                         <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Category</h3>
+                                    <h2 style={{ marginTop: '175px', marginLeft: '50px', marginBottom: '90px', fontWeight: '600' }}> Explore Different Healthy Diets!</h2>
+{/*Slider*/}                        <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Vegetarian</h3>
                                     <div className="margin-bottom-60">
                                         <Slider {...settings}>
-                                        {this.state.results.map(item => (
+                                        {this.state.category1.map(item => (
                                             <div className="mb-5 padding-10">
                                                 <div className="card" >
                                                     <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
-                                                        <img src={item.image} style={{ width: '100%' }}></img>
+                                                        <img src={this.state.baseUri+"/"+item.imageUrls} style={{ width: '100%' }}></img>
                                                     </div>
                                                     <div className="row">
                                                         <div className="card-body col-xl-8 col-lg-8 col-md-8">
@@ -467,8 +513,77 @@ class App extends React.Component {
                                                             
                                                             <ul className="social">
                                                                 
-                                                                <li><a href=""><i className="recipeIcons fa fa-bolt" ></i></a>{item.calories}kcal</li>
-                                                                <li><a href=""><i className="recipeIcons fa fa-clock-o" ></i></a>{item.timeCook}   mins</li>
+                                                                <li><a href=""><i className="recipeIcons fa fa-clock-o" ></i></a>{item.readyInMinutes}   mins</li>
+                                                                <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.servings}   servings</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="card-footer " style={{ textAlign: 'right' }}>
+                                                        <a href="#" className="btn btn-sm" style={{backgroundColor:"#6cd34c", color:"#fff"}}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            ))}
+                                            
+                                        </Slider>
+                                    </div>
+                                    <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Keto</h3>
+                                    <div className="margin-bottom-60">
+                                        <Slider {...settings}>
+                                        {this.state.category2.map(item => (
+                                            <div className="mb-5 padding-10">
+                                                <div className="card" >
+                                                    <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
+                                                        <img src={this.state.baseUri+"/"+item.imageUrls} style={{ width: '100%' }}></img>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="card-body col-xl-8 col-lg-8 col-md-8">
+
+
+                                                            <h5 className="card-title">{item.title}</h5>
+                                                            <p className="card-text">{item.desc}</p>
+                                                        </div>
+                                                        <div className="col-xl-4 col-lg-4 col-md-4 product" style={{marginTop:'30px'}}>
+                                                            
+                                                            <ul className="social">
+                                                                
+                                                                <li><a href=""><i className="recipeIcons fa fa-clock-o" ></i></a>{item.readyInMinutes}   mins</li>
+                                                                <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.servings}   servings</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="card-footer " style={{ textAlign: 'right' }}>
+                                                        <a href="#" className="btn btn-sm" style={{backgroundColor:"#6cd34c", color:"#fff"}}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            ))}
+                                            
+                                        </Slider>
+                                    </div>
+                                    <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Plant-Based</h3>
+                                    <div className="margin-bottom-60">
+                                        <Slider {...settings}>
+                                        {this.state.results.map(item => (
+                                            <div className="mb-5 padding-10">
+                                                <div className="card" >
+                                                    <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
+                                                        <img src={this.state.baseUri+"/"+item.imageUrls} style={{ width: '100%' }}></img>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="card-body col-xl-8 col-lg-8 col-md-8">
+
+
+                                                            <h5 className="card-title">{item.title}</h5>
+                                                            <p className="card-text">{item.desc}</p>
+                                                        </div>
+                                                        <div className="col-xl-4 col-lg-4 col-md-4 product" style={{marginTop:'30px'}}>
+                                                            
+                                                            <ul className="social">
+                                                                
+                                                                <li><a href=""><i className="recipeIcons fa fa-clock-o" ></i></a>{item.readyInMinutes}   mins</li>
                                                                 <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.servings}   servings</li>
                                                             </ul>
                                                         </div>
