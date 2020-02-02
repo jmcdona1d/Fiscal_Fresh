@@ -50,30 +50,13 @@ function SampleNextArrow(props) {
     );
   }
 
-function login() {
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    var raw = JSON.stringify({"email":"michael.dowling@queensu.ca","password":"eJasnSkj48A.5"});
-
-    var requestOptions = {
-    method: 'POST',
-    headers: myHeaders,
-    body: raw,
-    redirect: 'follow'
-    };
-
-    fetch("/login", requestOptions)
-    .then(response => response.text())
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error));
-}
-
 
 
 class App extends React.Component {
     
     constructor(props) {
         super(props);
+        this.childLook = React.createRef();
 
         
 
@@ -236,13 +219,16 @@ class App extends React.Component {
             category1: [],
             category2: [],
             category3: [],
-            category4: []
+            category4: [],
+            history: []
 
         }
         
 
         this.handleChange = this.handleChange.bind(this);
         this.handlePageLoad = this.handlePageLoad.bind(this);
+        this.handleAddToCart = this.handleAddToCart.bind(this);
+        this.handleRewriteHistory = this.handleRewriteHistory.bind(this);
 
         this.handlePageLoad();
     }
@@ -273,13 +259,29 @@ class App extends React.Component {
           body: raw,
           redirect: 'follow'
         };
+
+        var requestOptions2 = {
+            method: 'GET',
+            redirect: 'follow'
+          };
         
         fetch("/add-to-cart", requestOptions)
           .then(response => response.text())
-          .then(result => console.log(result))
+          .then(result =>{ console.log(result)
+            fetch("/recipe_history", requestOptions2)
+                .then(response => response.text())
+                .then(result =>{
+                    var json = JSON.parse(result);    
+
+                    this.setState({
+                        history: json
+                })
+            console.log(this.state.history)
+                })
+          })
           .catch(error => {console.log('error', error)}); //if there are errors, its probably because the user hasn't signed in
 
-
+        
     }
       
      
@@ -338,6 +340,15 @@ class App extends React.Component {
         }, 300)
     }
 
+
+
+    handleRewriteHistory(childHistory){
+        const fieldEditor = this.childLook.current;
+
+        this.setState({ history: childHistory })
+    }
+  
+
     handlePageLoad(event) {
         
         console.log("hello");
@@ -379,6 +390,11 @@ class App extends React.Component {
             body: raw4,
             redirect: 'follow'
         };
+
+        var requestOptions5 = {
+            method: 'GET',
+            redirect: 'follow'
+          };
 
         fetch("/search-recipes", requestOptions)
         .then(response => response.text())
@@ -431,9 +447,9 @@ class App extends React.Component {
             var json = JSON.parse(result);    
 
             this.setState({
-                category2: json
+                category3: json
             })
-            console.log(this.state.category2)
+            console.log(this.state.category3)
         })
         .catch(error => console.log('error', error));
 
@@ -449,6 +465,17 @@ class App extends React.Component {
             console.log(this.state.category4)
         })
         .catch(error => console.log('error', error));
+
+        fetch("/recipe_history", requestOptions5)
+                .then(response => response.text())
+                .then(result =>{
+                    var json = JSON.parse(result);    
+
+                    this.setState({
+                        history: json
+                })
+            console.log(this.state.history)
+                })
 
     }
       
@@ -482,7 +509,7 @@ class App extends React.Component {
                                         Meal Prepper
                         </a>
                                     <ul className="nav">
-                                        <li><Sample></Sample></li>
+                                        <li><Sample ref={this.childLook} onChange={this.handleRewriteHistory.bind(this)}></Sample></li>
                                         <li><h3 href="#"><i className="fa fa-shopping-cart" style={{ color: 'rgb(91, 206, 56)' }}></i> </h3></li>
 
                                     </ul>
@@ -635,7 +662,7 @@ class App extends React.Component {
                                     <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Plant-Based</h3>
                                     <div className="margin-bottom-60">
                                         <Slider {...settings}>
-                                        {this.state.results.map(item => (
+                                        {this.state.category3.map(item => (
                                             <div className="mb-5 padding-10">
                                                 <div className="card" >
                                                     <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
@@ -700,6 +727,41 @@ class App extends React.Component {
                                             ))}
                                             
                                         </Slider>
+                                        <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}>Previously Purchased</h3>
+                                    <div className="margin-bottom-60">
+                                        <Slider {...settings}>
+                                        {this.state.category1.map(item => (
+                                            <div className="mb-5 padding-10">
+                                                <div className="card" >
+                                                    <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
+                                                    <img src={this.state.baseUri+"/"+item.imageUrls} style={{ width: '100%' }}></img>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="card-body col-xl-8 col-lg-8 col-md-8">
+
+
+                                                            <h5 className="card-title">{item.title}</h5>
+                                                            <p className="card-text">{item.desc}</p>
+                                                        </div>
+                                                        <div className="col-xl-4 col-lg-4 col-md-4 product" style={{marginTop:'30px'}}>
+                                                            
+                                                            <ul className="social">
+                                                                
+                                                                <li><a href=""><i className="recipeIcons fa fa-clock-o" ></i></a>{item.readyInMinutes}   mins</li>
+                                                                <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.servings}   servings</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="card-footer " style={{ textAlign: 'right' }}>
+                                                        <a href="#" className="btn btn-sm" onClick={() => this.handleAddToCart(item)} style={{backgroundColor:"#6cd34c", color:"#fff"}}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            ))}
+                                            
+                                        </Slider>
+                                    </div>
                                     </div>
 
 

@@ -8,7 +8,8 @@ export default class Sample extends React.Component {
     this.state = {
       showModal: false,
       loading: false,
-      error: null
+      error: null,
+      history:[]
     };
   }
  
@@ -58,12 +59,29 @@ export default class Sample extends React.Component {
   onLoginSuccess(method, response) {
     console.log("logged successfully with " + method);
     this.closeModal();
+
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+  
+      fetch("/recipe_history", requestOptions)
+          .then(response => response.text())
+          .then(result =>{
+              var json = JSON.parse(result);    
+
+              this.setState({
+                  history: json
+          });
+          this.props.onChange(json)
+        })
+    
     this.setState({
       loggedIn: method,
       loading: false
     })
-  }
- 
+  } 
+
   onLoginFail(method, response) {
     console.log("logging failed with " + method);
     this.setState({
