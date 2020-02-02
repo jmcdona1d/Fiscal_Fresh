@@ -2,7 +2,9 @@ from requests import Session
 import json
 from flask import request, make_response, jsonify
 import threading
+import copy
 from user import add_recipe_history, get_jwt_token, login, decode_auth_token
+from recipe_ingredients import get_recipe_ingredients
 
 def get_ingredients(session, request_body):
     items = []
@@ -115,10 +117,12 @@ def add_to_cart():
     return 'success'
 
 def handle_order(request_body, auth_info):
+    request_body['recipes'] = copy.deepcopy(request_body)
     request_body['email'] = auth_info['email']
+    recipe_details = json.loads(get_recipe_ingredients({"id": request_body["id"]}))
     session = Session()
     login(True, session, auth_info)
-    ingredients, cart_id = get_ingredients(session, request_body)
+    ingredients, cart_id = get_ingredients(session, recipe_details)
     response = add_items_to_cart(session, ingredients, cart_id)
     if response.status_code == 200:
         # succesfully added to cart, store user recipe history

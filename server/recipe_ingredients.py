@@ -6,15 +6,15 @@ import json
 #OUT: list of ingredients and details of that recipe
 #       'top' has info about recipe - diet, healty, cheap, popular etc...
 #        list of ingredients has name, amount/unit, picture
-def get_recipe_ingredients():
+def get_recipe_ingredients(request_body=None):
 
     with open('credentials.json', 'r') as f:
         creds = json.loads(f.read())
         apiKey = creds['spoonacular_api_key']
-
-    request_body = request.get_json()
     if not request_body:
-        request_body = request.form
+        request_body = request.get_json()
+        if not request_body:
+            request_body = request.form
 
     recipeId = request_body['id']
 
