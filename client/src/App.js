@@ -14,6 +14,7 @@ import Slider from "react-slick";
 //import "./slick-carousel/slick/slick.css"; 
 //import "./slick-carousel/slick/slick-theme.css";
 import food from "./assets/images/food.jpg";
+import Sample from "./Login"
 import axios from 'axios';
 
 
@@ -51,16 +52,13 @@ function SampleNextArrow(props) {
 
 function login() {
     var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "multipart/form-data; boundary=--------------------------665443580241862269536222");
-
-    var formdata = new FormData();
-    formdata.append("email", "michael.dowling@queensu.ca");
-    formdata.append("password", "eJasnSkj48A.5");
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify({"email":"michael.dowling@queensu.ca","password":"eJasnSkj48A.5"});
 
     var requestOptions = {
     method: 'POST',
     headers: myHeaders,
-    body: formdata,
+    body: raw,
     redirect: 'follow'
     };
 
@@ -256,15 +254,16 @@ class App extends React.Component {
           filtered: this.state.list
         });
       }
-    
+      
     handleAddToCart(item) {
-        // this should already be called when they login.
-        // for now it is here for testing
-        login()
+        // user must have already signed in
+        // would be good to prompt if they haven't
+
+        // add the recipe to cart
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         
-        var raw = JSON.stringify({"id":716429,"calories":584,"carbs":"84g","fat":"20g","image":"https://spoonacular.com/recipeImages/716429-312x231.jpg","imageType":"jpg","protein":"19g","title":"Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs"});
+        var raw = JSON.stringify(item);
         
         var requestOptions = {
           method: 'POST',
@@ -276,7 +275,7 @@ class App extends React.Component {
         fetch("/add-to-cart", requestOptions)
           .then(response => response.text())
           .then(result => console.log(result))
-          .catch(error => console.log('error', error));
+          .catch(error => {console.log('error', error)}); //if there are errors, its probably because the user hasn't signed in
 
 
     }
@@ -450,6 +449,7 @@ class App extends React.Component {
 
                 <header className="header-area header-sticky">
                     <div className="container">
+                        
                         <div className="row">
                             <div className="col-12">
                                 <nav className="main-nav">
@@ -457,8 +457,7 @@ class App extends React.Component {
                                         Meal Prepper
                         </a>
                                     <ul className="nav">
-                                        <li><a href="#" className="main-button-slider" onClick={this.handlePageLoad}>Sign Up</a></li>
-
+                                        <li><Sample></Sample></li>
                                         <li><h3 href="#"><i className="fa fa-shopping-cart" style={{ color: 'rgb(91, 206, 56)' }}></i> </h3></li>
 
                                     </ul>
@@ -565,7 +564,7 @@ class App extends React.Component {
                                                     </div>
 
                                                     <div className="card-footer " style={{ textAlign: 'right' }}>
-                                                        <a href="#" className="btn btn-sm" style={{backgroundColor:"#6cd34c", color:"#fff"}}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
+                                                        <a href="#" className="btn btn-sm" onClick={() => this.handleAddToCart(item)} style={{backgroundColor:"#6cd34c", color:"#fff"}}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -600,7 +599,7 @@ class App extends React.Component {
                                                     </div>
 
                                                     <div className="card-footer " style={{ textAlign: 'right' }}>
-                                                        <a href="#" className="btn btn-sm" style={{backgroundColor:"#6cd34c", color:"#fff"}}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
+                                                        <a href="#" className="btn btn-sm" onClick={() => this.handleAddToCart(item)} style={{backgroundColor:"#6cd34c", color:"#fff"}}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
                                                     </div>
                                                 </div>
                                             </div>
