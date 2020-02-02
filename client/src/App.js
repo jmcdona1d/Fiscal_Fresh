@@ -219,6 +219,7 @@ class App extends React.Component {
         
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     state = initialState
@@ -294,22 +295,47 @@ class App extends React.Component {
           query: "chicken"
         }
         var myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Content-Type", "application/json");
 
-var raw = JSON.stringify({"query":"sausage","cuisine":"italian","intolerences":""});
+        var raw = JSON.stringify({"query":"sausage","cuisine":"italian","intolerences":""});
 
-var requestOptions = {
-  method: 'POST',
-  headers: myHeaders,
-  body: raw,
-  redirect: 'follow'
-};
+        var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+        };
 
-fetch("/search-recipes", requestOptions)
-  .then(response => response.text())
-  .then(result => console.log(result))
-  .catch(error => console.log('error', error));
-      }
+        fetch("/search-recipes", requestOptions)
+        .then(response => response.text())
+        .then(result => {console.log(result);
+            
+            var json = JSON.parse(result);
+            var newjson = []
+            for(var i = 0; i < json.length; i++){
+                var entry = json[i]["recipe"];
+
+                entry["title"] = entry["label"];
+                entry["timeCook"] = entry["totalTime"];
+                entry["servings"] = entry["yield"];
+                const cals = Math.round(entry["calories"]);
+                
+                entry["calories"] = cals;
+                entry["image"] = entry["image"];
+                const imgArr = []
+                imgArr.push( entry["image"]);
+                entry["imageUrls"] = imgArr;
+
+                newjson.push(entry);
+            }
+
+            this.setState({
+                results: newjson
+            })
+            console.log(this.state.results)
+        })
+        .catch(error => console.log('error', error));
+    }
       
 
     render() {
@@ -329,7 +355,7 @@ fetch("/search-recipes", requestOptions)
         };
         return (
             <div className="">
-                {this.handleSubmit()}
+            {console.log(this.state.results)}
 
                 <header className="header-area header-sticky">
                     <div className="container">
@@ -428,7 +454,7 @@ fetch("/search-recipes", requestOptions)
                                             <div className="mb-5 padding-10">
                                                 <div className="card" >
                                                     <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
-                                                        <img src={this.state.baseUri+"/"+item.imageUrls} style={{ width: '100%' }}></img>
+                                                        <img src={item.image} style={{ width: '100%' }}></img>
                                                     </div>
                                                     <div className="row">
                                                         <div className="card-body col-xl-8 col-lg-8 col-md-8">

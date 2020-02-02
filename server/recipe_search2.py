@@ -18,7 +18,7 @@ def get_recipes():
 
     query = request_body.get('query', '')
     
-    url = "https://api.edamam.com/search?q={}&app_id={}&app_key={}".format( query, appKey, apiKey)
+    url = "https://api.edamam.com/search?q={}&app_id={}&app_key={}&time=1-200".format( query, appKey, apiKey)
     payload = {}
     headers= {}
 
