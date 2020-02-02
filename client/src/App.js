@@ -50,26 +50,6 @@ function SampleNextArrow(props) {
     );
   }
 
-function login() {
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    var raw = JSON.stringify({"email":"michael.dowling@queensu.ca","password":"eJasnSkj48A.5"});
-
-    var requestOptions = {
-    method: 'POST',
-    headers: myHeaders,
-    body: raw,
-    redirect: 'follow'
-    };
-
-    fetch("/login", requestOptions)
-    .then(response => response.text())
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error));
-}
-
-
-
 class App extends React.Component {
     
     constructor(props) {
@@ -338,6 +318,28 @@ class App extends React.Component {
         }, 300)
     }
 
+    handleGetRecipe(item) {
+        // HEY BRIGGS!!! This method gets the recipe instructions when someone clicks on the recipe image if you want to display it somehow
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({"id": item['id']});
+
+        var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+        };
+
+        fetch("/get-recipe-details", requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+
+    }
+
     handlePageLoad(event) {
         
         console.log("hello");
@@ -569,7 +571,7 @@ class App extends React.Component {
                                             <div className="mb-5 padding-10">
                                                 <div className="card" >
                                                     <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
-                                                    <img src={this.state.baseUri+"/"+item.imageUrls} style={{ width: '100%' }}></img>
+                                                    <img src={this.state.baseUri+"/"+item.imageUrls} onClick={() => this.handleGetRecipe(item)} style={{ width: '100%' }}></img>
                                                     </div>
                                                     <div className="row">
                                                         <div className="card-body col-xl-8 col-lg-8 col-md-8">
@@ -604,7 +606,7 @@ class App extends React.Component {
                                             <div className="mb-5 padding-10">
                                                 <div className="card" >
                                                     <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
-                                                        <img src={this.state.baseUri+"/"+item.imageUrls} style={{ width: '100%' }}></img>
+                                                        <img src={this.state.baseUri+"/"+item.imageUrls} onClick={() => this.handleGetRecipe(item)} style={{ width: '100%' }}></img>
                                                     </div>
                                                     <div className="row">
                                                         <div className="card-body col-xl-8 col-lg-8 col-md-8">
@@ -639,7 +641,7 @@ class App extends React.Component {
                                             <div className="mb-5 padding-10">
                                                 <div className="card" >
                                                     <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
-                                                        <img src={this.state.baseUri+"/"+item.imageUrls} style={{ width: '100%' }}></img>
+                                                        <img src={this.state.baseUri+"/"+item.imageUrls} onClick={() => this.handleGetRecipe(item)} style={{ width: '100%' }}></img>
                                                     </div>
                                                     <div className="row">
                                                         <div className="card-body col-xl-8 col-lg-8 col-md-8">
