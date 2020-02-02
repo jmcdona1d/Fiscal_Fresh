@@ -215,7 +215,9 @@ class App extends React.Component {
             
             filtered: [],
             category1: [],
-            category2: []
+            category2: [],
+            category3: [],
+            category4: []
 
         }
         
@@ -302,6 +304,8 @@ class App extends React.Component {
         var raw = JSON.stringify({"query":"","cuisine":"","intolerences":"","diet":"Vegetarian"});
         var raw2 = JSON.stringify({"query":"","cuisine":"","intolerences":"","diet":"ketogenic"});
         var raw3 = JSON.stringify({"query":"","cuisine":"","intolerences":"","diet":"Vegan"});
+        var raw4 =  JSON.stringify({"maxCalories":"600","minProtein": 10});
+
 
 
         var requestOptions = {
@@ -322,6 +326,13 @@ class App extends React.Component {
             method: 'POST',
             headers: myHeaders,
             body: raw3,
+            redirect: 'follow'
+        };
+
+        var requestOptions4 = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw4,
             redirect: 'follow'
         };
 
@@ -379,6 +390,19 @@ class App extends React.Component {
                 category2: json
             })
             console.log(this.state.category2)
+        })
+        .catch(error => console.log('error', error));
+
+        fetch("/search-recipes-nutrition", requestOptions4)
+        .then(response => response.text())
+        .then(result => {console.log(result);
+            
+            var json = JSON.parse(result);    
+
+            this.setState({
+                category4: json
+            })
+            console.log(this.state.category4)
         })
         .catch(error => console.log('error', error));
     }
@@ -500,7 +524,7 @@ class App extends React.Component {
                                             <div className="mb-5 padding-10">
                                                 <div className="card" >
                                                     <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
-                                                        <img src={this.state.baseUri+"/"+item.imageUrls} style={{ width: '100%' }}></img>
+                                                    <img src={this.state.baseUri+"/"+item.imageUrls} style={{ width: '100%' }}></img>
                                                     </div>
                                                     <div className="row">
                                                         <div className="card-body col-xl-8 col-lg-8 col-md-8">
@@ -585,6 +609,40 @@ class App extends React.Component {
                                                                 
                                                                 <li><a href=""><i className="recipeIcons fa fa-clock-o" ></i></a>{item.readyInMinutes}   mins</li>
                                                                 <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.servings}   servings</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="card-footer " style={{ textAlign: 'right' }}>
+                                                        <a href="#" className="btn btn-sm" style={{backgroundColor:"#6cd34c", color:"#fff"}}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            ))}
+                                            
+                                        </Slider>
+                                    </div>
+                                    <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Body Builder</h3>
+                                    <div className="margin-bottom-60">
+                                        <Slider {...settings}>
+                                        {this.state.category4.map(item => (
+                                            <div className="mb-5 padding-10">
+                                                <div className="card" >
+                                                    <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
+                                                        <img src={item.image} style={{ width: '100%' }}></img>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="card-body col-xl-8 col-lg-8 col-md-8">
+
+
+                                                            <h5 className="card-title">{item.title}</h5>
+                                                            <p className="card-text">{item.desc}</p>
+                                                        </div>
+                                                        <div className="col-xl-4 col-lg-4 col-md-4 product" style={{marginTop:'30px'}}>
+                                                            
+                                                            <ul className="social">
+                                                            <li><a href=""><i className="recipeIcons fa fa-bolt" ></i></a>{item.calories}kcal</li>
+                                                                <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.protein}   g of protein</li>
                                                             </ul>
                                                         </div>
                                                     </div>

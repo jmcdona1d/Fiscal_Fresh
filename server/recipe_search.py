@@ -28,3 +28,23 @@ def get_recipes():
 
     r = json.loads(response.text.encode('utf8'))
     return json.dumps(r['results'])
+
+def get_recipes_nutrition():
+
+    with open('credentials.json', 'r') as f:
+        creds = json.loads(f.read())
+        apiKey = creds['spoonacular_api_key']
+
+    request_body = request.get_json()
+    if not request_body:
+        request_body = request.form
+
+    maxCals = request_body.get('maxCalories', '')
+    minProtein = request_body.get('minProtein', '')
+    
+    url = "https://api.spoonacular.com/recipes/findByNutrients?apiKey={}&maxCalories={}&minProtein={}&random=true".format(apiKey,maxCals,minProtein)
+    payload = {}
+    headers= {}
+
+    response = requests.request("GET", url, headers=headers, data = payload)
+    return response.text.encode('utf8')
