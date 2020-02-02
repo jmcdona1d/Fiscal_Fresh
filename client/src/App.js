@@ -49,6 +49,27 @@ function SampleNextArrow(props) {
     );
   }
 
+function login() {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "multipart/form-data; boundary=--------------------------665443580241862269536222");
+
+    var formdata = new FormData();
+    formdata.append("email", "michael.dowling@queensu.ca");
+    formdata.append("password", "eJasnSkj48A.5");
+
+    var requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: formdata,
+    redirect: 'follow'
+    };
+
+    fetch("/login", requestOptions)
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
+}
+
 
 
 class App extends React.Component {
@@ -237,6 +258,30 @@ class App extends React.Component {
           filtered: this.state.list
         });
       }
+    
+    handleAddToCart(item) {
+        // this should already be called when they login.
+        // for now it is here for testing
+        login()
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        
+        var raw = JSON.stringify({"id":716429,"calories":584,"carbs":"84g","fat":"20g","image":"https://spoonacular.com/recipeImages/716429-312x231.jpg","imageType":"jpg","protein":"19g","title":"Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs"});
+        
+        var requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: raw,
+          redirect: 'follow'
+        };
+        
+        fetch("/add-to-cart", requestOptions)
+          .then(response => response.text())
+          .then(result => console.log(result))
+          .catch(error => console.log('error', error));
+
+
+    }
       
      
 
@@ -614,7 +659,7 @@ class App extends React.Component {
                                                     </div>
 
                                                     <div className="card-footer " style={{ textAlign: 'right' }}>
-                                                        <a href="#" className="btn btn-sm" style={{backgroundColor:"#6cd34c", color:"#fff"}}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
+                                                        <a href="#" className="btn btn-sm" onClick={() => this.handleAddToCart(item)} style={{backgroundColor:"#6cd34c", color:"#fff"}}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
                                                     </div>
                                                 </div>
                                             </div>
