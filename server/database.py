@@ -35,21 +35,20 @@ def add_history(request_body):
         request_body = request.form
 
     email = request_body['email']
-    additions = set(request_body['recipes'])
+    additions = request_body['recipes']
     # add document
-    if (records.count_documents({'email':email}) != 1):
+    if records.count_documents({'email':email}) == 0:
         new_entry={
             'email':email,
-            'recipes':list(additions)
+            'recipes': [additions]
         }
         records.insert_one(new_entry)
 
     # edit document that already exists
     else:
         entry = records.find_one({'email':email})
-        additions |= set(entry['recipes'])
-        
-        records.update_one({'email':email}, {"$set":{'recipes': list(additions)}})
+        entry['recipes'].append(additions)        
+        records.update_one({'email':email}, {"$set":{'recipes': entry['recipes']}})
     return {
         'result': "success"
     }

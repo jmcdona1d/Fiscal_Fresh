@@ -61,13 +61,13 @@ def login(for_session=False, session=None, request_body=None):
         }
         resp = make_response(jsonify(resp))
         resp.set_cookie('mealplanner_auth_token', jwt_token.decode())
-        return resp
+        return resp, 200
     else:
         return make_response(jsonify({
             'status': 'failed',
             'status_code': 400,
             'message': 'authentication failed'
-        }))
+        })), 400
 
 
 def encode_auth_token(email, pw):

@@ -14,6 +14,7 @@ import Slider from "react-slick";
 //import "./slick-carousel/slick/slick.css"; 
 //import "./slick-carousel/slick/slick-theme.css";
 import food from "./assets/images/food.jpg";
+import Sample from "./Login"
 import axios from 'axios';
 
 
@@ -49,6 +50,27 @@ function SampleNextArrow(props) {
     );
   }
 
+<<<<<<< HEAD
+=======
+function login() {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify({"email":"michael.dowling@queensu.ca","password":"eJasnSkj48A.5"});
+
+    var requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+    };
+
+    fetch("/login", requestOptions)
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
+}
+
+>>>>>>> c92a1269fe7fb4fe862d64c79a5b577479dba9b5
 
 
 class App extends React.Component {
@@ -237,7 +259,36 @@ class App extends React.Component {
           filtered: this.state.list
         });
       }
+<<<<<<< HEAD
     
+=======
+      
+    handleAddToCart(item) {
+        // user must have already signed in
+        // would be good to prompt if they haven't
+
+        // add the recipe to cart
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        
+        var raw = JSON.stringify(item);
+        
+        var requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: raw,
+          redirect: 'follow'
+        };
+        
+        fetch("/add-to-cart", requestOptions)
+          .then(response => response.text())
+          .then(result => console.log(result))
+          .catch(error => {console.log('error', error)}); //if there are errors, its probably because the user hasn't signed in
+
+
+    }
+      
+>>>>>>> c92a1269fe7fb4fe862d64c79a5b577479dba9b5
      
 
     handleChange(e) {
@@ -430,6 +481,7 @@ class App extends React.Component {
 
                 <header className="header-area header-sticky">
                     <div className="container">
+                        
                         <div className="row">
                             <div className="col-12">
                                 <nav className="main-nav">
@@ -437,8 +489,7 @@ class App extends React.Component {
                                         Meal Prepper
                         </a>
                                     <ul className="nav">
-                                        <li><a href="#" className="main-button-slider" onClick={this.handlePageLoad}>Sign Up</a></li>
-
+                                        <li><Sample></Sample></li>
                                         <li><h3 href="#"><i className="fa fa-shopping-cart" style={{ color: 'rgb(91, 206, 56)' }}></i> </h3></li>
 
                                     </ul>
@@ -545,7 +596,7 @@ class App extends React.Component {
                                                     </div>
 
                                                     <div className="card-footer " style={{ textAlign: 'right' }}>
-                                                        <a href="#" className="btn btn-sm" style={{backgroundColor:"#6cd34c", color:"#fff"}}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
+                                                        <a href="#" className="btn btn-sm" onClick={() => this.handleAddToCart(item)} style={{backgroundColor:"#6cd34c", color:"#fff"}}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -580,7 +631,7 @@ class App extends React.Component {
                                                     </div>
 
                                                     <div className="card-footer " style={{ textAlign: 'right' }}>
-                                                        <a href="#" className="btn btn-sm" style={{backgroundColor:"#6cd34c", color:"#fff"}}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
+                                                        <a href="#" className="btn btn-sm" onClick={() => this.handleAddToCart(item)} style={{backgroundColor:"#6cd34c", color:"#fff"}}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
                                                     </div>
                                                 </div>
                                             </div>
