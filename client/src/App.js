@@ -4,7 +4,7 @@ import logo from './logo.svg';
 
 import _ from 'lodash'
 import faker from 'faker'
-import { Search, Grid, Header, Segment } from 'semantic-ui-react'
+import { Grid, Header, Segment, Sidebar, Image } from 'semantic-ui-react'
 import './assets/css/qweb.css';
 import './assets/css/bootstrap.min.css';
 import './assets/css/font-awesome.css';
@@ -13,12 +13,43 @@ import Slider from "react-slick";
 //import "./slick-carousel/slick/slick-theme.css";
 import food from "./assets/images/food.jpg";
 import SliderRecipe from "./SliderRecipe.js"
+import RecipeSearch from "./Search.js"
 import ProteinRecipe from "./SliderRecipe.js"
 import NavBar from "./NavBar.js"
 import axios from 'axios';
+import recipes from './test_recipes.js' 
 
 
-const initialState = { isLoading: false, results: [], value: '' }
+const initialState = { isLoading: false, cart:[],results: [], value: '' }
+
+
+const HorizontalSidebar = ({ animation, direction, visible }) => (
+    <Sidebar
+      as={Segment}
+      animation={animation}
+      direction={direction}
+      visible={visible}
+    >
+      <Grid textAlign='center'>
+        <Grid.Row columns={1}>
+          <Grid.Column>
+            <Header as='h3'>New Content Awaits</Header>
+          </Grid.Column>
+        </Grid.Row>
+        <Grid columns={3} divided>
+          <Grid.Column>
+            <Image src='https://react.semantic-ui.comhttps://react.semantic-ui.com/images/wireframe/media-paragraph.png' />
+          </Grid.Column>
+          <Grid.Column>
+            <Image src='https://react.semantic-ui.comhttps://react.semantic-ui.com/images/wireframe/media-paragraph.png' />
+          </Grid.Column>
+          <Grid.Column>
+            <Image src='https://react.semantic-ui.comhttps://react.semantic-ui.com/images/wireframe/media-paragraph.png' />
+          </Grid.Column>
+        </Grid>
+      </Grid>
+    </Sidebar>
+  )
 
 const source = [{
     "id": "1",
@@ -57,14 +88,20 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.childLook = React.createRef();
-
-
-
+        let longRecipes = []
+        longRecipes = longRecipes.concat(recipes.results1.concat(recipes.results2.concat(recipes.results3)))
+        console.log(longRecipes)
+        let res = recipes.result1
         this.state = {
-            results: [
+            results:{recipes},
+            recipes:{res},
+            search:{longRecipes},
+            cart:[],
+            cartLength:0,
+            res: [
                 {
                     "id": 592479,
-                    "title": "Kale and Quinoa Salad with Black Beans",
+                    "title": "ale and Quinoa Salad with Black Beans",
                     "readyInMinutes": 50,
                     "servings": 6,
                     "image": "Kale-and-Quinoa-Salad-with-Black-Beans-592479.jpg",
@@ -230,13 +267,24 @@ class App extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handlePageLoad = this.handlePageLoad.bind(this);
         this.handleAddToCart = this.handleAddToCart.bind(this);
+        this.addToCart = this.addToCart.bind(this);
 
-
+        
         this.handlePageLoad();
     }
 
-    state = initialState
+    
 
+     addToCart = (recipe) => {
+         
+        this.state.cart = this.state.cart.concat(recipe);
+        this.state.cartLength = this.state.cartLength + 1;
+        
+        console.log(this.state.cart);
+        console.log(this.state.cartLength);
+    }
+
+    
 
 
 
@@ -245,6 +293,8 @@ class App extends React.Component {
             filtered: this.state.category1
         });
     }
+
+    
 
     handleAddToCart(item) {
         // user must have already signed in
@@ -570,13 +620,16 @@ class App extends React.Component {
 
             autoplaySpeed: 100,
             slidesToShow: 3,
-            slidesToScroll: 1,
-            nextArrow: <SampleNextArrow />,
-            prevArrow: <SamplePrevArrow />
+            slidesToScroll: 1
         };
         return (
+
+
+            
+
+
             <div className="">
-                <NavBar />>
+                <NavBar items={this.state.cartLength}/>
 
 
 
@@ -646,27 +699,25 @@ class App extends React.Component {
                         <div className="row">
                             <div className="col-lg-12">
                                 <div>
-                                    <h2 style={{ marginTop: '175px', marginLeft: '50px', marginBottom: '90px', fontWeight: '600' }}> Explore Different Healthy Diets!</h2>
+                                <h2 style={{ marginTop: '175px', marginLeft: '50px', marginBottom: '90px', fontWeight: '600' }}> Explore Different Healthy Diets!</h2>
                                     {/*Slider*/}                        <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Vegetarian</h3>
                                     <div className="margin-bottom-60">
-                                        <SliderRecipe />
+                                        <SliderRecipe callback={this.addToCart} list={recipes.results1}/>
                                     </div>
                                     <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Keto</h3>
                                     <div className="margin-bottom-60">
-                                        <SliderRecipe />
+                                        <SliderRecipe callback={this.addToCart} list={recipes.results2}/>
                                     </div>
                                     <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Plant-Based</h3>
                                     <div className="margin-bottom-60">
-                                        <SliderRecipe />
+                                        <SliderRecipe callback={this.addToCart} list={recipes.results3}/>
                                     </div>
-                                    <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Body Builder</h3>
+                                    {/*<h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Body Builder</h3>
                                     <div className="margin-bottom-60">
-                                        <SliderRecipe />
-                                        <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}>Previously Purchased</h3>
-                                        <div className="margin-bottom-60">
-                                            <SliderRecipe />
-                                        </div>
-                                    </div>
+                                        <SliderRecipe list={recipes.results3}/>
+                                        
+                                </div>*/}
+                                    <RecipeSearch callback={this.addToCart} recipes={recipes.results3.concat(recipes.results2.concat(recipes.results1))}/>
 
 
 
@@ -674,73 +725,7 @@ class App extends React.Component {
 
 
 
-                                    {/*Search*/}
-
-                                    <Grid style={{ paddingBottom: '300px' }}>
-                                        <Grid.Column width={5}>
-                                            <Search className="col-md-4" onSearchChange={this.handleSearchChange}
-                                                value={value}
-
-                                                loading={isLoading}
-                                                onResultSelect={this.handleResultSelect}
-
-                                                results={filtered}
-
-                                                {...this.props}
-                                            />
-
-
-                                        </Grid.Column>
-                                        <Grid.Column width={1}><a className="btn btn-sm" onClick={() => this.handleSearchSubmit()} style={{ backgroundColor: "#6cd34c", color: "#fff" }}>Search<i className="fa fa-search" ></i> </a></Grid.Column>
-
-
-                                        <Grid.Column width={10}>
-                                            <Segment>
-                                                <h2>Recipes</h2>
-                                                <div className="row">
-                                                    {this.state.filtered.map(item => (
-                                                        <div className="col-md-4 col-lg-4 mb-5 padding-10">
-                                                            <div className="card" >
-                                                                <div style={{ objectFit: 'cover', width: 'auto', height: '100px', overflow: 'hidden' }}>
-                                                                    <img src={this.state.baseUri + "/" + item.imageUrls} style={{ width: '100%' }}></img>
-                                                                </div>
-                                                                <div className="row">
-                                                                    <div className="card-body col-xl-8 col-lg-8 col-md-8">
-
-
-                                                                        <h5 className="card-title">{item.title}</h5>
-                                                                        <p className="card-text">{item.desc}</p>
-                                                                    </div>
-                                                                    <div className="col-xl-4 col-lg-4 col-md-4 product" style={{ marginTop: '30px' }}>
-
-                                                                        <ul className="social">
-
-                                                                            <li><a href=""><i className="recipeIcons fa fa-clock-o" ></i></a>{item.readyInMinutes}   mins</li>
-                                                                            <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.servings}   servings</li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div className="card-footer " style={{ textAlign: 'right' }}>
-                                                                    <a href="#" className="btn btn-sm" onClick={() => this.handleAddToCart(item)} style={{ backgroundColor: "#6cd34c", color: "#fff" }}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-
-
-
-                                                {/*<pre style={{ overflowX: 'auto' }}>
-              {JSON.stringify(this.state, null, 2)}
-            </pre>
-            <Header>Options</Header>
-            <pre style={{ overflowX: 'auto' }}>
-              {JSON.stringify(source, null, 2)}
-        </pre>*/}
-                                            </Segment>
-                                        </Grid.Column>
-                                    </Grid>
+                                    
 
                                 </div>
                             </div>
