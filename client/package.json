@@ -21,7 +21,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "https://meal-planner-qhacks-2020.appspot.com",
+  "proxy": "https://localhost:5000",
   "eslintConfig": {
     "extends": "react-app"
   },

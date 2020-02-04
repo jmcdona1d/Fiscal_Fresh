@@ -111,8 +111,8 @@ export default class Sample extends React.Component {
   render() {
     return (
       <div>
-        <a href="#" className="main-button-slider" onClick={() => this.openModal()}>Sign Up</a>
- 
+        <a  onClick={() => this.openModal()}><i className="fa fa-user" style={{ fontSize: '30px', marginTop:'2px', color: 'rgb(91, 206, 56)' }}></i></a>
+        
         <ReactModalLogin
           visible={this.state.showModal}
           onCloseModal={this.closeModal.bind(this)}

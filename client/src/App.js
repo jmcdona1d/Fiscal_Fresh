@@ -12,7 +12,9 @@ import Slider from "react-slick";
 //import "./slick-carousel/slick/slick.css"; 
 //import "./slick-carousel/slick/slick-theme.css";
 import food from "./assets/images/food.jpg";
-import Sample from "./Login"
+import SliderRecipe from "./SliderRecipe.js"
+import ProteinRecipe from "./SliderRecipe.js"
+import NavBar from "./NavBar.js"
 import axios from 'axios';
 
 
@@ -228,7 +230,7 @@ class App extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handlePageLoad = this.handlePageLoad.bind(this);
         this.handleAddToCart = this.handleAddToCart.bind(this);
-        this.handleRewriteHistory = this.handleRewriteHistory.bind(this);
+
 
         this.handlePageLoad();
     }
@@ -340,7 +342,7 @@ class App extends React.Component {
                 filtered: _.filter(this.state.category2, isMatch),
             })
         }, 300)
-        
+
 
         console.log(this.state.query)
     }
@@ -361,28 +363,29 @@ class App extends React.Component {
             redirect: 'follow'
         };
         fetch("/search-recipes", requestOptions)
-        .then(response => response.text())
-        .then(result => {console.log(result);
-            
-            var json = JSON.parse(result);    
+            .then(response => response.text())
+            .then(result => {
+                console.log(result);
 
-            this.setState({
-                searchResult: json
+                var json = JSON.parse(result);
+
+                this.setState({
+                    searchResult: json
+                })
+                console.log(this.state.category3)
             })
-            console.log(this.state.category3)
-        })
-        .catch(error => console.log('error', error));
+            .catch(error => console.log('error', error));
     }
 
-    handleSearchSubmit(){
+    handleSearchSubmit() {
         //Define Query - call this method on submit of search function.
         //Probably have to refresh page to reload results unless we can avoid that somehow
 
-        var raw = JSON.stringify({"query":this.state.query});
+        var raw = JSON.stringify({ "query": this.state.query });
         console.log(this.state.query)
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        
+
         var requestOptions = {
             method: 'POST',
             headers: myHeaders,
@@ -391,17 +394,18 @@ class App extends React.Component {
         };
 
         fetch("/get-recipe-details", requestOptions)
-        .then(response => response.text())
-        .then(result => {console.log(result);
-            
-            var json = JSON.parse(result);    
+            .then(response => response.text())
+            .then(result => {
+                console.log(result);
 
-            this.setState({
-                filtered: json
+                var json = JSON.parse(result);
+
+                this.setState({
+                    filtered: json
+                })
+                console.log(this.state.filtered)
             })
-            console.log(this.state.filtered)
-        })
-        .catch(error => console.log('error', error));
+            .catch(error => console.log('error', error));
 
     }
 
@@ -413,8 +417,8 @@ class App extends React.Component {
     }
 
     handleSearchChange(event) {
-        this.setState({value: event.target.value});
-      }
+        this.setState({ value: event.target.value });
+    }
 
 
     handlePageLoad(event) {
@@ -554,7 +558,7 @@ class App extends React.Component {
 
     }
 
-        
+
     render() {
         const { isLoading, value, results, filtered } = this.state
 
@@ -572,30 +576,9 @@ class App extends React.Component {
         };
         return (
             <div className="">
-                
+                <NavBar />>
 
-                <header className="header-area header-sticky">
-                    <div className="container">
 
-                        <div className="row">
-                            <div className="col-12">
-                                <nav className="main-nav">
-                                    <a href="#" className="logo" style={{ color: 'black' }}>
-                                        Meal Prepper
-                        </a>
-                                    <ul className="nav">
-                                        <li><Sample ref={this.childLook} onChange={this.handleRewriteHistory.bind(this)}></Sample></li>
-                                        <li><h3 href="#"><a href={'http://instacart.com'}><i className="fa fa-shopping-cart" style={{ color: 'rgb(91, 206, 56)' }}></i></a> </h3></li>
-
-                                    </ul>
-                                    <a className='menu-trigger'>
-                                        <span>Menu</span>
-                                    </a>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
-                </header>
 
                 <div className="welcome-area" id="welcome">
 
@@ -605,7 +588,7 @@ class App extends React.Component {
                                 <div className="offset-xl-1 col-xl-12 offset-lg-2 col-lg-12 col-md-12 col-sm-12">
 
 
-                                    <h1 style={{ fontWeight: 600 }}>Recipes       <i className="fa fa-long-arrow-right"></i>   Groceries</h1>
+                                    <h1 style={{ fontWeight: 600, textAlign: 'left' }}>Recipes       <i className="fa fa-long-arrow-right"></i>   Groceries</h1>
                                     <h4 className="compress">Browse your favourite recipes by cusine, meal type, various diets. Find some you like, add to cart and we will order the groceries you need.</h4>
                                     <div style={{ paddingBottom: '20px' }}>
                                         <a href="" className="main-button-slider">Learn More</a>
@@ -659,183 +642,29 @@ class App extends React.Component {
                 </section>
 
                 <section className="section home-feature ">
-                    <div className=" ">
+                    <div className="container">
                         <div className="row">
                             <div className="col-lg-12">
                                 <div>
                                     <h2 style={{ marginTop: '175px', marginLeft: '50px', marginBottom: '90px', fontWeight: '600' }}> Explore Different Healthy Diets!</h2>
                                     {/*Slider*/}                        <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Vegetarian</h3>
                                     <div className="margin-bottom-60">
-                                        <Slider {...settings}>
-                                            {this.state.category1.map(item => (
-                                                <div className="mb-5 padding-10">
-                                                    <div className="card" >
-                                                        <div style={{ objectFit: 'cover', width: 'auto', height: '170px', overflow: 'hidden' }}>
-                                                            <img src={this.state.baseUri + "/" + item.imageUrls} onClick={() => this.handleGetRecipe(item)} style={{ width: '100%' }}></img>
-                                                        </div>
-                                                        <div className="row">
-                                                            <div className="card-body col-xl-8 col-lg-8 col-md-8">
-
-
-                                                                <h5 className="card-title">{item.title}</h5>
-                                                                <p className="card-text">{item.desc}</p>
-                                                            </div>
-                                                            <div className="col-xl-4 col-lg-4 col-md-4 product" style={{ marginTop: '30px' }}>
-
-                                                                <ul className="social">
-
-                                                                    <li><a href=""><i className="recipeIcons fa fa-clock-o" ></i></a>{item.readyInMinutes}   mins</li>
-                                                                    <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.servings}   servings</li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="card-footer " style={{ textAlign: 'right' }}>
-                                                            <a href="#" className="btn btn-sm" onClick={() => this.handleAddToCart(item)} style={{ backgroundColor: "#6cd34c", color: "#fff" }}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
-
-                                        </Slider>
+                                        <SliderRecipe />
                                     </div>
                                     <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Keto</h3>
                                     <div className="margin-bottom-60">
-                                        <Slider {...settings}>
-                                            {this.state.category2.map(item => (
-                                                <div className="mb-5 padding-10">
-                                                    <div className="card" >
-                                                        <div style={{ objectFit: 'cover', width: 'auto', height: '170px', overflow: 'hidden' }}>
-                                                            <img src={this.state.baseUri + "/" + item.imageUrls} onClick={() => this.handleGetRecipe(item)} style={{ width: '100%' }}></img>
-                                                        </div>
-                                                        <div className="row">
-                                                            <div className="card-body col-xl-8 col-lg-8 col-md-8">
-
-
-                                                                <h5 className="card-title">{item.title}</h5>
-                                                                <p className="card-text">{item.desc}</p>
-                                                            </div>
-                                                            <div className="col-xl-4 col-lg-4 col-md-4 product" style={{ marginTop: '30px' }}>
-
-                                                                <ul className="social">
-
-                                                                    <li><a href=""><i className="recipeIcons fa fa-clock-o" ></i></a>{item.readyInMinutes}   mins</li>
-                                                                    <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.servings}   servings</li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="card-footer " style={{ textAlign: 'right' }}>
-                                                            <a href="#" className="btn btn-sm" onClick={() => this.handleAddToCart(item)} style={{ backgroundColor: "#6cd34c", color: "#fff" }}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
-
-                                        </Slider>
+                                        <SliderRecipe />
                                     </div>
                                     <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Plant-Based</h3>
                                     <div className="margin-bottom-60">
-                                        <Slider {...settings}>
-                                            {this.state.category3.map(item => (
-                                                <div className="mb-5 padding-10">
-                                                    <div className="card" >
-                                                        <div style={{ objectFit: 'cover', width: 'auto', height: '170px', overflow: 'hidden' }}>
-                                                            <img src={this.state.baseUri + "/" + item.imageUrls} onClick={() => this.handleGetRecipe(item)} style={{ width: '100%' }}></img>
-                                                        </div>
-                                                        <div className="row">
-                                                            <div className="card-body col-xl-8 col-lg-8 col-md-8">
-
-
-                                                                <h5 className="card-title">{item.title}</h5>
-                                                                <p className="card-text">{item.desc}</p>
-                                                            </div>
-                                                            <div className="col-xl-4 col-lg-4 col-md-4 product" style={{ marginTop: '30px' }}>
-
-                                                                <ul className="social">
-
-                                                                    <li><a href=""><i className="recipeIcons fa fa-clock-o" ></i></a>{item.readyInMinutes}   mins</li>
-                                                                    <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.servings}   servings</li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="card-footer " style={{ textAlign: 'right' }}>
-                                                            <a href="#" className="btn btn-sm" style={{ backgroundColor: "#6cd34c", color: "#fff" }}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
-
-                                        </Slider>
+                                        <SliderRecipe />
                                     </div>
                                     <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}> Body Builder</h3>
                                     <div className="margin-bottom-60">
-                                        <Slider {...settings}>
-                                            {this.state.category4.map(item => (
-                                                <div className="mb-5 padding-10">
-                                                    <div className="card" >
-                                                        <div style={{ objectFit: 'cover', width: 'auto', height: '170px', overflow: 'hidden' }}>
-                                                            <img src={item.image} style={{ width: '100%' }}></img>
-                                                        </div>
-                                                        <div className="row">
-                                                            <div className="card-body col-xl-8 col-lg-8 col-md-8">
-
-
-                                                                <h5 className="card-title">{item.title}</h5>
-                                                                <p className="card-text">{item.desc}</p>
-                                                            </div>
-                                                            <div className="col-xl-4 col-lg-4 col-md-4 product" style={{ marginTop: '30px' }}>
-
-                                                                <ul className="social">
-                                                                    <li><a href=""><i className="recipeIcons fa fa-bolt" ></i></a>{item.calories}kcal</li>
-                                                                    <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.protein}   g of protein</li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="card-footer " style={{ textAlign: 'right' }}>
-                                                            <a href="#" className="btn btn-sm" style={{ backgroundColor: "#6cd34c", color: "#fff" }}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
-
-                                        </Slider>
+                                        <SliderRecipe />
                                         <h3 style={{ marginTop: '10px', marginLeft: '50px', marginBottom: '10px', fontWeight: '600' }}>Previously Purchased</h3>
                                         <div className="margin-bottom-60">
-                                            <Slider {...settings}>
-                                                {this.state.category1.map(item => (
-                                                    <div className="mb-5 padding-10">
-                                                        <div className="card" >
-                                                            <div style={{ objectFit: 'cover', width: 'auto', height: '170px', overflow: 'hidden' }}>
-                                                                <img src={this.state.baseUri + "/" + item.imageUrls} style={{ width: '100%' }}></img>
-                                                            </div>
-                                                            <div className="row">
-                                                                <div className="card-body col-xl-8 col-lg-8 col-md-8">
-
-
-                                                                    <h5 className="card-title">{item.title}</h5>
-                                                                    <p className="card-text">{item.desc}</p>
-                                                                </div>
-                                                                <div className="col-xl-4 col-lg-4 col-md-4 product" style={{ marginTop: '30px' }}>
-
-                                                                    <ul className="social">
-
-                                                                        <li><a href=""><i className="recipeIcons fa fa-clock-o" ></i></a>{item.readyInMinutes}   mins</li>
-                                                                        <li><a href=""><i className="recipeIcons fa fa-user" ></i></a>{item.servings}   servings</li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-
-                                                            <div className="card-footer " style={{ textAlign: 'right' }}>
-                                                                <a href="#" className="btn btn-sm" onClick={() => this.handleAddToCart(item)} style={{ backgroundColor: "#6cd34c", color: "#fff" }}><i className="fa fa-shopping-cart" ></i> Add to Cart</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                ))}
-
-                                            </Slider>
+                                            <SliderRecipe />
                                         </div>
                                     </div>
 
@@ -847,23 +676,23 @@ class App extends React.Component {
 
                                     {/*Search*/}
 
-                                    <Grid style={{paddingBottom:'300px'}}>
+                                    <Grid style={{ paddingBottom: '300px' }}>
                                         <Grid.Column width={5}>
                                             <Search className="col-md-4" onSearchChange={this.handleSearchChange}
                                                 value={value}
-                                                
+
                                                 loading={isLoading}
                                                 onResultSelect={this.handleResultSelect}
-                                                
+
                                                 results={filtered}
-                                                
+
                                                 {...this.props}
                                             />
-                                            
-                                            
+
+
                                         </Grid.Column>
                                         <Grid.Column width={1}><a className="btn btn-sm" onClick={() => this.handleSearchSubmit()} style={{ backgroundColor: "#6cd34c", color: "#fff" }}>Search<i className="fa fa-search" ></i> </a></Grid.Column>
-                                        
+
 
                                         <Grid.Column width={10}>
                                             <Segment>
