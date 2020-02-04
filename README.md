@@ -1,2 +1,2 @@
 # meal_planner
-https://fiscalfoods.netlify.com
+https://fiscalfresh.netlify.com
